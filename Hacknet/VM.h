@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Process.h"
+#include "Network/Node.h"
 
 class VM
 {
@@ -13,6 +14,9 @@ class VM
 	inline static std::string version = "0.1";
 	inline static bool isOn = false;
 	inline static bool isBusy = false;
+
+	inline static Node* originNode = nullptr;
+	inline static Node* activeNode = nullptr;
 
 	inline static std::vector<Process*> commands;
 
@@ -45,6 +49,10 @@ public:
 	static void Update();
 	static void Exit();
 
+	static void Connect(Node* _node);
+	static void Disconnect();
+
 private:
+	
 	static void InitCommands();
 };

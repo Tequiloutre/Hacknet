@@ -156,14 +156,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Commands\connect.cpp" />
+    <ClCompile Include="Commands\disconnect.cpp" />
     <ClCompile Include="Commands\say.cpp" />
+    <ClCompile Include="Network\Node.cpp" />
+    <ClCompile Include="Network\WAN.cpp" />
     <ClCompile Include="Process.cpp" />
     <ClCompile Include="Hacknet.cpp" />
     <ClCompile Include="Interpretor.cpp" />
     <ClCompile Include="VM.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Commands\connect.h" />
+    <ClInclude Include="Commands\disconnect.h" />
     <ClInclude Include="Commands\say.h" />
+    <ClInclude Include="Network\Node.h" />
+    <ClInclude Include="Network\WAN.h" />
     <ClInclude Include="Process.h" />
     <ClInclude Include="Interpretor.h" />
     <ClInclude Include="VM.h" />

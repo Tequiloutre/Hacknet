@@ -3,7 +3,10 @@
 #include <iostream>
 
 #include "Interpretor.h"
+#include "Commands/connect.h"
+#include "Commands/disconnect.h"
 #include "Commands/say.h"
+#include "Network/WAN.h"
 
 using namespace std;
 
@@ -23,13 +26,22 @@ void VM::Start()
 {
 	isOn = true;
 	Log("Starting {} v{}...", name, version);
+
+	originNode = WAN::CreateNode();
+	activeNode = originNode;
+	
+	WAN::CreateNode();
+	WAN::CreateNode();
+	WAN::CreateNode();
+	WAN::CreateNode();
+
 	InitCommands();
 }
 
 void VM::Update()
 {
 	if (isBusy) return;
-	cout << "> ";
+	cout << activeNode->GetIP() << "> ";
 	string args;
 	getline(cin, args);
 	Interpretor::Read(args);
@@ -42,7 +54,19 @@ void VM::Exit()
 		delete commands[i];
 }
 
+void VM::Connect(Node* _node)
+{
+	activeNode = _node;
+}
+
+void VM::Disconnect()
+{
+	activeNode = originNode;
+}
+
 void VM::InitCommands()
 {
 	commands.push_back(new say());
+	commands.push_back(new connect());
+	commands.push_back(new disconnect());
 }
