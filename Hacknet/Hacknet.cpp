@@ -2,7 +2,7 @@
 
 int main(int argc, char* argv[])
 {
-	srand(time(nullptr));
+	srand(static_cast<unsigned int>(time(nullptr)));  // NOLINT(cert-msc51-cpp)
 	
 	VM::Start();
 
