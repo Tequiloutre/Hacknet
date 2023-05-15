@@ -12,6 +12,7 @@ class VM
 {
 	inline static std::string name = "Hacknet";
 	inline static std::string version = "0.1";
+	inline static std::string login = "tequi";
 	inline static bool isOn = false;
 	inline static bool isBusy = false;
 

@@ -42,7 +42,7 @@ void VM::StartUp()
 void VM::Update()
 {
 	if (isBusy) return;
-	cout << activeNode->GetIP() << "> ";
+	cout << login << '@' << activeNode->GetIP() << ":$ ";
 	string args;
 	getline(cin, args);
 	Interpretor::Read(args);
