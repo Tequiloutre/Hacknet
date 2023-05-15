@@ -20,6 +20,12 @@ bool WAN::GetNode(const string& _targetIP, Node** _outNode)
 	return true;
 }
 
+void WAN::Destroy()
+{
+	for (const auto _node : nodes)
+		delete _node.second;
+}
+
 string WAN::GetRandomIP()
 {
 	string _newIp = to_string(rand() % 255) + "." + to_string(rand() % 255) + "." + to_string(rand() % 255) + "." + to_string(rand() % 255);

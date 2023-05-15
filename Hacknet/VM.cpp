@@ -6,6 +6,7 @@
 #include "Commands/connect.h"
 #include "Commands/disconnect.h"
 #include "Commands/say.h"
+#include "Commands/shutdown.h"
 #include "Network/WAN.h"
 
 using namespace std;
@@ -22,7 +23,7 @@ bool VM::Execute(const std::string& _commandName, const std::vector<std::string>
 	return false;
 }
 
-void VM::Start()
+void VM::StartUp()
 {
 	isOn = true;
 	Log("Starting {} v{}...", name, version);
@@ -47,11 +48,12 @@ void VM::Update()
 	Interpretor::Read(args);
 }
 
-void VM::Exit()
+void VM::Shutdown()
 {
-	const size_t _count = commands.size();
-	for (size_t i = 0; i < _count; ++i)
-		delete commands[i];
+	for (const auto _command : commands)
+		delete _command;
+
+	isOn = false;
 }
 
 void VM::Connect(Node* _node)
@@ -69,4 +71,5 @@ void VM::InitCommands()
 	commands.push_back(new say());
 	commands.push_back(new connect());
 	commands.push_back(new disconnect());
+	commands.push_back(new shutdown());
 }

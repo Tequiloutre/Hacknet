@@ -45,9 +45,9 @@ public:
 		std::cout << ToString(_format, _args...) << std::endl;
 	}
 
-	static void Start();
+	static void StartUp();
 	static void Update();
-	static void Exit();
+	static void Shutdown();
 
 	static void Connect(Node* _node);
 	static void Disconnect();

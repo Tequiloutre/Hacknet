@@ -13,6 +13,8 @@ public:
 	
 	static bool GetNode(const std::string& _targetIP, Node** _outNode);
 
+	static void Destroy();
+
 private:
 	
 	static std::string GetRandomIP();
