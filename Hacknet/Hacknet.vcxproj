@@ -160,6 +160,7 @@
     <ClCompile Include="Commands\disconnect.cpp" />
     <ClCompile Include="Commands\say.cpp" />
     <ClCompile Include="Commands\shutdown.cpp" />
+    <ClCompile Include="FileSystem\Folder.cpp" />
     <ClCompile Include="Network\Node.cpp" />
     <ClCompile Include="Network\WAN.cpp" />
     <ClCompile Include="Process.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="Commands\disconnect.h" />
     <ClInclude Include="Commands\say.h" />
     <ClInclude Include="Commands\shutdown.h" />
+    <ClInclude Include="FileSystem\Folder.h" />
     <ClInclude Include="Network\Node.h" />
     <ClInclude Include="Network\WAN.h" />
     <ClInclude Include="Process.h" />

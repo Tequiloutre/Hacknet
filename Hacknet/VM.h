@@ -18,6 +18,7 @@ class VM
 
 	inline static Node* originNode = nullptr;
 	inline static Node* activeNode = nullptr;
+	inline static Folder* activeFolder = nullptr;
 
 	inline static std::vector<Process*> commands;
 

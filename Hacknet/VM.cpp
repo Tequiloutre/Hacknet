@@ -30,6 +30,7 @@ void VM::StartUp()
 
 	originNode = WAN::CreateNode();
 	activeNode = originNode;
+	activeFolder = originNode->GetRoot();
 	
 	WAN::CreateNode();
 	WAN::CreateNode();
@@ -42,7 +43,7 @@ void VM::StartUp()
 void VM::Update()
 {
 	if (isBusy) return;
-	cout << login << '@' << activeNode->GetIP() << ":$ ";
+	cout << login << '@' << activeNode->GetIP() << ":" << activeFolder->GetPath() << "/$ ";
 	string args;
 	getline(cin, args);
 	Interpretor::Read(args);
