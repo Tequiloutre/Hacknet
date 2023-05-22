@@ -14,9 +14,10 @@ public:
 	std::string GetName() const { return name; }
 	Folder* GetParentFolder() const { return parentFolder; }
 	std::vector<Folder*> GetFolders() const { return folders; }
+	Folder* GetFolderByName(const std::string& _folderName) const;
 	std::string GetPath() const;
-
-	Folder(const std::string& _name, Folder* _parentFolder = nullptr);
+	
+	Folder(const std::string& _name);
 	~Folder();
 
 	void SetParentFolder(Folder* _parent);

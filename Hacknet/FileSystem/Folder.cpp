@@ -2,6 +2,17 @@
 
 using namespace std;
 
+Folder* Folder::GetFolderByName(const std::string& _folderName) const
+{
+	const size_t _count = folders.size();
+	for (size_t i = 0; i < _count; ++i)
+	{
+		if (folders[i]->GetName() != _folderName) continue;
+		return folders[i];
+	}
+	return nullptr;
+}
+
 std::string Folder::GetPath() const
 {
 	string _path = name;
@@ -14,10 +25,9 @@ std::string Folder::GetPath() const
 	return _path;
 }
 
-Folder::Folder(const std::string& _name, Folder* _parentFolder)
+Folder::Folder(const std::string& _name)
 {
 	name = _name;
-	parentFolder = _parentFolder;
 }
 
 Folder::~Folder()

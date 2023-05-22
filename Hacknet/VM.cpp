@@ -3,8 +3,10 @@
 #include <iostream>
 
 #include "Interpretor.h"
+#include "Commands/cd.h"
 #include "Commands/connect.h"
 #include "Commands/disconnect.h"
+#include "Commands/ls.h"
 #include "Commands/say.h"
 #include "Commands/shutdown.h"
 #include "Network/WAN.h"
@@ -31,6 +33,7 @@ void VM::StartUp()
 	originNode = WAN::CreateNode();
 	activeNode = originNode;
 	activeFolder = originNode->GetRoot();
+	activeFolder->AddFolder(new Folder("test"));
 	
 	WAN::CreateNode();
 	WAN::CreateNode();
@@ -67,10 +70,17 @@ void VM::Disconnect()
 	activeNode = originNode;
 }
 
+void VM::SetActiveFolder(Folder* _folder)
+{
+	activeFolder = _folder;
+}
+
 void VM::InitCommands()
 {
 	commands.push_back(new say());
 	commands.push_back(new connect());
 	commands.push_back(new disconnect());
 	commands.push_back(new shutdown());
+	commands.push_back(new ls());
+	commands.push_back(new cd());
 }
