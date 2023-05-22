@@ -3,12 +3,7 @@
 #include <iostream>
 
 #include "Interpretor.h"
-#include "Commands/cd.h"
-#include "Commands/connect.h"
-#include "Commands/disconnect.h"
-#include "Commands/ls.h"
-#include "Commands/say.h"
-#include "Commands/shutdown.h"
+#include "Processes/Commands.h"
 #include "Network/WAN.h"
 
 using namespace std;
@@ -63,11 +58,13 @@ void VM::Shutdown()
 void VM::Connect(Node* _node)
 {
 	activeNode = _node;
+	activeFolder = _node->GetRoot();
 }
 
 void VM::Disconnect()
 {
 	activeNode = originNode;
+	activeFolder = originNode->GetRoot();
 }
 
 void VM::SetActiveFolder(Folder* _folder)
@@ -77,10 +74,10 @@ void VM::SetActiveFolder(Folder* _folder)
 
 void VM::InitCommands()
 {
-	commands.push_back(new say());
-	commands.push_back(new connect());
-	commands.push_back(new disconnect());
-	commands.push_back(new shutdown());
-	commands.push_back(new ls());
-	commands.push_back(new cd());
+	commands.push_back(new say("say"));
+	commands.push_back(new connect("connect"));
+	commands.push_back(new disconnect("disconnect"));
+	commands.push_back(new shutdown("shutdown"));
+	commands.push_back(new ls("ls"));
+	commands.push_back(new cd("cd"));
 }

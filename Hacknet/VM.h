@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "Process.h"
+#include "Processes/Process.h"
 #include "Network/Node.h"
 
 class VM
