@@ -158,6 +158,7 @@
   <ItemGroup>
     <ClCompile Include="FileSystem\Folder.cpp" />
     <ClCompile Include="Network\Node.cpp" />
+    <ClCompile Include="Network\Port.cpp" />
     <ClCompile Include="Network\WAN.cpp" />
     <ClCompile Include="Hacknet.cpp" />
     <ClCompile Include="Interpretor.cpp" />
@@ -240,6 +241,7 @@
   <ItemGroup>
     <ClInclude Include="FileSystem\Folder.h" />
     <ClInclude Include="Network\Node.h" />
+    <ClInclude Include="Network\Port.h" />
     <ClInclude Include="Network\WAN.h" />
     <ClInclude Include="Interpretor.h" />
     <ClInclude Include="Processes\Commands.h" />

@@ -57,3 +57,11 @@ public:
 	shutdown(const std::string& _name) : Process(_name) { }
 	bool Execute(const std::vector<std::string>& _args) override;
 };
+
+class probe : public Process
+{
+public:
+
+	probe(const std::string& _name) : Process(_name) { }
+	bool Execute(const std::vector<std::string>& _args) override;
+};

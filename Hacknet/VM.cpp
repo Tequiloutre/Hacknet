@@ -25,23 +25,53 @@ void VM::StartUp()
 	isOn = true;
 	Log("Starting {} v{}...", name, version);
 
-	originNode = WAN::CreateNode();
+	originNode = new Node
+	(
+		"Youen-PC",
+		WAN::GetRandomIP(),
+		vector<Port*>
+		{
+			new Port(SSH, 22),
+			new Port(FTP, 21)
+		},
+		5
+	);
+	WAN::AddNode(originNode);
 	activeNode = originNode;
 	activeFolder = originNode->GetRoot();
 	activeFolder->AddFolder(new Folder("test"));
-	
-	WAN::CreateNode();
-	WAN::CreateNode();
-	WAN::CreateNode();
-	WAN::CreateNode();
 
+	WAN::AddNode(new Node
+	(
+		"Nassim-PC",
+		WAN::GetRandomIP(),
+		vector<Port*>
+		{
+			new Port(SSH, 22),
+			new Port(FTP, 21)
+		},
+		1
+	));
+
+	WAN::AddNode(new Node
+	(
+		"Thomas-PC",
+		WAN::GetRandomIP(),
+		vector<Port*>
+		{
+			new Port(SSH, 22),
+			new Port(FTP, 21)
+		},
+		2
+	));
+	
 	InitCommands();
 }
 
 void VM::Update()
 {
 	if (isBusy) return;
-	cout << login << '@' << activeNode->GetIP() << ":" << activeFolder->GetPath() << "/$ ";
+	cout << endl << login << '@' << activeNode->GetName() << ":" << activeFolder->GetPath() << "/$ ";
 	string args;
 	getline(cin, args);
 	Interpretor::Read(args);
@@ -80,4 +110,5 @@ void VM::InitCommands()
 	commands.push_back(new shutdown("shutdown"));
 	commands.push_back(new ls("ls"));
 	commands.push_back(new cd("cd"));
+	commands.push_back(new probe("probe"));
 }

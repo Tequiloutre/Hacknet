@@ -26,6 +26,7 @@ public:
 
 	static std::string GetName() { return name; }
 	static std::string GetVersion() { return version; }
+	static Node* GetActiveNode() { return activeNode; }
 	static Folder* GetActiveFolder() { return activeFolder; }
 	static bool IsOn() { return isOn; }
 	static bool Execute(const std::string& _commandName, const std::vector<std::string>& _args);
