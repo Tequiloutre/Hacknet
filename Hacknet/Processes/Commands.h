@@ -34,11 +34,27 @@ public:
 	bool Execute(const std::vector<std::string>& _args) override;
 };
 
+class ip : public Process
+{
+public:
+
+	ip(const std::string& _name) : Process(_name) { }
+	bool Execute(const std::vector<std::string>& _args) override;
+};
+
 class ls : public Process
 {
 public:
 
 	ls(const std::string& _name) : Process(_name) { }
+	bool Execute(const std::vector<std::string>& _args) override;
+};
+
+class probe : public Process
+{
+public:
+
+	probe(const std::string& _name) : Process(_name) { }
 	bool Execute(const std::vector<std::string>& _args) override;
 };
 
@@ -58,10 +74,6 @@ public:
 	bool Execute(const std::vector<std::string>& _args) override;
 };
 
-class probe : public Process
-{
-public:
 
-	probe(const std::string& _name) : Process(_name) { }
-	bool Execute(const std::vector<std::string>& _args) override;
-};
+
+

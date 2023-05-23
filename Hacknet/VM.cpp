@@ -24,7 +24,7 @@ void VM::StartUp()
 {
 	isOn = true;
 	Log("Starting {} v{}...", name, version);
-
+	
 	originNode = new Node
 	(
 		"Youen-PC",
@@ -104,11 +104,12 @@ void VM::SetActiveFolder(Folder* _folder)
 
 void VM::InitCommands()
 {
-	commands.push_back(new say("say"));
+	commands.push_back(new cd("cd"));
 	commands.push_back(new connect("connect"));
 	commands.push_back(new disconnect("disconnect"));
-	commands.push_back(new shutdown("shutdown"));
+	commands.push_back(new ip("ip"));
 	commands.push_back(new ls("ls"));
-	commands.push_back(new cd("cd"));
 	commands.push_back(new probe("probe"));
+	commands.push_back(new say("say"));
+	commands.push_back(new shutdown("shutdown"));
 }

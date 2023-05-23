@@ -32,7 +32,9 @@ Folder::Folder(const std::string& _name)
 
 Folder::~Folder()
 {
-	std::vector<Folder*>().swap(folders);
+	for (auto _folder : folders)
+		delete _folder;
+	folders.clear();
 }
 
 void Folder::SetParentFolder(Folder* _parent)

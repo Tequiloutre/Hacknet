@@ -14,5 +14,7 @@ Node::Node(const std::string& _name, const std::string& _ip, const std::vector<P
 Node::~Node()
 {
 	delete rootFolder;
-	std::vector<Port*>().swap(ports);
+	for (auto _port : ports)
+		delete _port;
+	ports.clear();
 }

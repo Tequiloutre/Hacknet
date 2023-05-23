@@ -64,6 +64,13 @@ bool disconnect::Execute(const std::vector<std::string>& _args)
 	return true;
 }
 
+bool ip::Execute(const std::vector<std::string>& _args)
+{
+	if (!_args.empty()) return false;
+	VM::Log("eth0: {}", VM::GetActiveNode()->GetIP());
+	return true;
+}
+
 bool ls::Execute(const std::vector<std::string>& _args)
 {
 	if (!_args.empty()) return false;
@@ -73,6 +80,22 @@ bool ls::Execute(const std::vector<std::string>& _args)
 	for (size_t i = 0; i < _count; ++i)
 		VM::Log("{}", _folders[i]->GetName());
 	
+	return true;
+}
+
+bool probe::Execute(const std::vector<std::string>& _args)
+{
+	if (!_args.empty()) return false;
+	const Node* _currentNode = VM::GetActiveNode();
+	VM::Log("Available ports at : {}", _currentNode->GetName());
+	const vector<Port*> _ports = _currentNode->GetPorts();
+	const size_t _count = _ports.size();
+	for (size_t i = 0; i < _count; ++i)
+	{
+		const Port* _port = _ports[i];
+		VM::Log("{}\t\t{}\t\t{}", _port->GetNumber(), _port->GetType(), _port->IsOpened() ? "opened" : "closed");
+	}
+	VM::Log("Open ports needed for hack : {}", _currentNode->GetRequiredPorts());
 	return true;
 }
 
@@ -100,18 +123,4 @@ bool shutdown::Execute(const std::vector<std::string>& _args)
 	return true;
 }
 
-bool probe::Execute(const std::vector<std::string>& _args)
-{
-	if (!_args.empty()) return false;
-	const Node* _currentNode = VM::GetActiveNode();
-	VM::Log("Available ports at : {}", _currentNode->GetName());
-	const vector<Port*> _ports = _currentNode->GetPorts();
-	const size_t _count = _ports.size();
-	for (size_t i = 0; i < _count; ++i)
-	{
-		const Port* _port = _ports[i];
-		VM::Log("{}\t\t{}\t\t{}", _port->GetNumber(), _port->GetType(), _port->IsOpened() ? "opened" : "closed");
-	}
-	VM::Log("Open ports needed for hack : {}", _currentNode->GetRequiredPorts());
-	return true;
-}
+

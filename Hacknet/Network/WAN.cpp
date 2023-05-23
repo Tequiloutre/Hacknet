@@ -4,13 +4,12 @@
 
 using namespace std;
 
-void WAN::AddNode(Node* _node)
+WAN::~WAN()
 {
-	const string _ip = _node->GetIP();
-	nodes.emplace(_ip, _node);
-	VM::Log("Added node : {}", _ip);
+	for (const auto& _node : nodes)
+		delete _node.second;
+	nodes.clear();
 }
-
 
 bool WAN::GetNode(const string& _targetIP, Node** _outNode)
 {
@@ -19,15 +18,16 @@ bool WAN::GetNode(const string& _targetIP, Node** _outNode)
 	return true;
 }
 
+void WAN::AddNode(Node* _node)
+{
+	const string _ip = _node->GetIP();
+	nodes.emplace(_ip, _node);
+	VM::Log("Added node : {}", _ip);
+}
+
 string WAN::GetRandomIP()
 {
 	string _newIp = to_string(rand() % 255) + "." + to_string(rand() % 255) + "." + to_string(rand() % 255) + "." + to_string(rand() % 255);
 	if (!nodes.contains(_newIp)) return _newIp;
 	return GetRandomIP();
-}
-
-void WAN::Destroy()
-{
-	for (const auto _node : nodes)
-		delete _node.second;
 }
