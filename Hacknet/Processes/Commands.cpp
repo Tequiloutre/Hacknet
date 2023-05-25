@@ -1,7 +1,7 @@
 ﻿#include "Commands.h"
 
-#include "../Network/WAN.h"
-#include "../System/VM.h"
+#include "Network/WAN.h"
+#include "System/VM.h"
 
 using namespace std;
 

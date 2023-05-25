@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include <map>
-#include "Node.h"
+#include "Network/Node.h"
 
 class WAN
 {

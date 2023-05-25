@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "../Processes/Process.h"
+#include "Processes/Process.h"
 
 class Folder;
 

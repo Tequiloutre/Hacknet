@@ -1,8 +1,8 @@
 ﻿#pragma once
 #include <string>
 
-#include "Port.h"
-#include "../FileSystem/Folder.h"
+#include "Network/Port.h"
+#include "FileSystem/Folder.h"
 
 class Node
 {

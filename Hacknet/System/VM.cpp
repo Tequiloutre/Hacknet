@@ -2,9 +2,9 @@
 
 #include <iostream>
 
-#include "Interpretor.h"
-#include "../Processes/Commands.h"
-#include "../Network/WAN.h"
+#include "System/Interpretor.h"
+#include "Processes/Commands.h"
+#include "Network/WAN.h"
 
 using namespace std;
 
