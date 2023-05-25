@@ -1,6 +1,6 @@
 ﻿#include "WAN.h"
 
-#include "../VM.h"
+#include "../System/VM.h"
 
 using namespace std;
 

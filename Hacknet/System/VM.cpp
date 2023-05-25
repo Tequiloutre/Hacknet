@@ -3,8 +3,8 @@
 #include <iostream>
 
 #include "Interpretor.h"
-#include "Processes/Commands.h"
-#include "Network/WAN.h"
+#include "../Processes/Commands.h"
+#include "../Network/WAN.h"
 
 using namespace std;
 
