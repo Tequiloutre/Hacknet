@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <nlohmann/json.hpp>
 #include <string>
 #include <vector>
 
@@ -18,10 +19,14 @@ public:
 	std::string GetPath() const;
 	
 	Folder(const std::string& _name);
+	Folder(const std::string& _name, const std::vector<Folder*>& _folders);
 	~Folder();
 
 	void SetParentFolder(Folder* _parent);
 
 	bool ContainsFolder(const std::string& _folderName) const;
 	void AddFolder(Folder* _folder);
+
+	nlohmann::json ToJson();
+	static Folder FromJson(const nlohmann::json& _json);
 };

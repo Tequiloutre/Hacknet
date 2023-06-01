@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <string>
+#include <nlohmann/json_fwd.hpp>
 
 enum PortType
 {
@@ -27,4 +28,7 @@ public:
 	}
 
 	void Open() { isOpened = true; }
+
+	nlohmann::json ToJson();
+	static Port FromJson(const nlohmann::json& _json);
 };

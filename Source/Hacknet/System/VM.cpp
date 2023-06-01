@@ -36,11 +36,11 @@ void VM::StartUp()
 		},
 		5
 	);
+	
 	WAN::AddNode(originNode);
-	activeNode = originNode;
-	activeFolder = originNode->GetRoot();
+	Connect(originNode);
 	activeFolder->AddFolder(new Folder("test"));
-
+	
 	WAN::AddNode(new Node
 	(
 		"Nassim-PC",
@@ -52,7 +52,7 @@ void VM::StartUp()
 		},
 		1
 	));
-
+	
 	WAN::AddNode(new Node
 	(
 		"Thomas-PC",

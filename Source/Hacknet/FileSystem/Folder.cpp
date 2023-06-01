@@ -1,6 +1,7 @@
 ﻿#include "FileSystem/Folder.h"
 
 using namespace std;
+using namespace nlohmann;
 
 Folder* Folder::GetFolderByName(const std::string& _folderName) const
 {
@@ -30,9 +31,15 @@ Folder::Folder(const std::string& _name)
 	name = _name;
 }
 
+Folder::Folder(const std::string& _name, const std::vector<Folder*>& _folders)
+{
+	name = _name;
+	folders = _folders;
+}
+
 Folder::~Folder()
 {
-	for (auto _folder : folders)
+	for (const auto _folder : folders)
 		delete _folder;
 	folders.clear();
 }
@@ -54,4 +61,32 @@ void Folder::AddFolder(Folder* _folder)
 	if (ContainsFolder(_folder->GetName())) return;
 	_folder->SetParentFolder(this);
 	folders.push_back(_folder);
+}
+
+json Folder::ToJson()
+{
+	json _json;
+	
+	_json["name"] = name;
+	
+	const size_t _folderCount = folders.size();
+	for (size_t i = 0; i < _folderCount; ++i)
+		_json["folders"][i] = folders[i]->ToJson();
+	
+	return _json;
+}
+
+Folder Folder::FromJson(const json& _json)
+{
+	Folder _folder(_json["name"]);
+	
+	if (_json.contains("folders"))
+	{
+		const vector<json> _foldersJson = _json["folders"];
+    	const size_t _folderCount = _foldersJson.size();
+    	for (size_t i = 0; i < _folderCount; ++i)
+    		_folder.AddFolder(new Folder(FromJson(_json["folders"][i])));
+	}
+	
+	return _folder;
 }
