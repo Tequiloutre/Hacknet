@@ -3,12 +3,26 @@
 #include <fstream>
 
 #include "VM.h"
+#include "Network/Account.h"
 #include "Network/Node.h"
 #include "Network/WAN.h"
 #include "nlohmann/json.hpp"
 
 using namespace std;
 using namespace nlohmann;
+
+void Saver::InitGameDir()
+{
+	char* _buffer;
+	size_t _length;
+	if (_dupenv_s(&_buffer, &_length, "USERPROFILE")) return;
+
+	gameDir = string(_buffer);
+	ranges::replace(gameDir, '\\', '/');
+	gameDir += "/Documents/My Games/ReHacknet/";
+
+	delete _buffer;
+}
 
 void Saver::Init()
 {
@@ -65,15 +79,51 @@ Node* Saver::LoadNode(const std::string& _name)
 	return _node;
 }
 
-void Saver::InitGameDir()
+void Saver::SaveGame()
 {
-	char* _buffer;
-	size_t _length;
-	if (_dupenv_s(&_buffer, &_length, "USERPROFILE")) return;
+	Account* _account = VM::GetActiveAccount();
+	
+	const string _dir = GetSaveDir();
+	const string _filePath = _dir + _account->GetUsername() + ".sav";
+	
+	json _json;
+	
+	_json["account"] = _account->ToJson();
+	_json["originNode"] = _account->GetOriginNode()->GetIP();
+	_json["wan"] = WAN::ToJson();
 
-	gameDir = string(_buffer);
-	ranges::replace(gameDir, '\\', '/');
-	gameDir += "/Documents/My Games/ReHacknet/";
+	ofstream _file(_filePath);
+	if (_file.bad())
+	{
+		VM::Log("[Saver] Incorrect path : {}", _filePath);
+		return;
+	}
+	if(!_file.is_open())
+	{
+		VM::Log("[Saver] Unable to open file : {}", _filePath);
+		return;
+	}
+	_file << setw(4) << _json;
+	_file.close();
+}
 
-	delete _buffer;
+void Saver::LoadAccount(const string& _accountName)
+{
+	const string _dir = GetSaveDir();
+	const string _filePath = _dir + _accountName + ".sav";
+	
+	ifstream _file(_filePath);
+	if (_file.bad())
+	{
+		VM::Log("[Saver] Incorrect path : {}", _filePath);
+		return;
+	}
+	if(!_file.is_open())
+	{
+		VM::Log("[Saver] Unable to open file : {}", _filePath);
+		return;
+	}
+	json _json;
+	_file >> _json;
+	_file.close();
 }

@@ -3,6 +3,7 @@
 #include "System/VM.h"
 
 using namespace std;
+using namespace nlohmann;
 
 WAN::~WAN()
 {
@@ -30,4 +31,18 @@ string WAN::GetRandomIP()
 	string _newIp = to_string(rand() % 255) + "." + to_string(rand() % 255) + "." + to_string(rand() % 255) + "." + to_string(rand() % 255);
 	if (!nodes.contains(_newIp)) return _newIp;
 	return GetRandomIP();
+}
+
+json WAN::ToJson()
+{
+	json _json;
+
+	int _index = 0;
+	for (const auto _node : nodes)
+	{
+		_json["nodes"][_index] = _node.second->ToJson();
+		++_index;
+	}
+
+	return _json;
 }

@@ -8,15 +8,16 @@
 #include "Processes/Process.h"
 #include "Network/Node.h"
 
+class Account;
+
 class VM
 {
 	inline static std::string name = "Hacknet";
 	inline static std::string version = "0.1";
-	inline static std::string login = "tequi";
+	inline static Account* activeAccount = nullptr;
 	inline static bool isOn = false;
 	inline static bool isBusy = false;
 
-	inline static Node* originNode = nullptr;
 	inline static Node* activeNode = nullptr;
 	inline static Folder* activeFolder = nullptr;
 
@@ -26,6 +27,7 @@ public:
 
 	static std::string GetName() { return name; }
 	static std::string GetVersion() { return version; }
+	static Account* GetActiveAccount() { return activeAccount; }
 	static Node* GetActiveNode() { return activeNode; }
 	static Folder* GetActiveFolder() { return activeFolder; }
 	static bool IsOn() { return isOn; }

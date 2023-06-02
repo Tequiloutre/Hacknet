@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include "Saver.h"
+#include "Network/Account.h"
 #include "System/Interpretor.h"
 #include "Processes/Commands.h"
 #include "Network/WAN.h"
@@ -24,10 +26,10 @@ void VM::StartUp()
 {
 	isOn = true;
 	Log("Starting {} v{}...", name, version);
-	
-	originNode = new Node
+
+	Node* _originNode = new Node
 	(
-		"Youen-PC",
+		"Tequiloutre-PC",
 		WAN::GetRandomIP(),
 		vector<Port*>
 		{
@@ -36,9 +38,18 @@ void VM::StartUp()
 		},
 		5
 	);
+
+	WAN::AddNode(_originNode);
+
+	activeAccount = new Account
+	(
+		"Tequiloutre",
+		"tequiloutre",
+		"password",
+		_originNode
+	);
 	
-	WAN::AddNode(originNode);
-	Connect(originNode);
+	Connect(_originNode);
 	activeFolder->AddFolder(new Folder("test"));
 	
 	WAN::AddNode(new Node
@@ -71,7 +82,7 @@ void VM::StartUp()
 void VM::Update()
 {
 	if (isBusy) return;
-	cout << endl << login << '@' << activeNode->GetName() << ":" << activeFolder->GetPath() << "/$ ";
+	cout << endl << activeAccount->GetUsername() << '@' << activeNode->GetName() << ":" << activeFolder->GetPath() << "/$ ";
 	string args;
 	getline(cin, args);
 	Interpretor::Read(args);
@@ -93,8 +104,8 @@ void VM::Connect(Node* _node)
 
 void VM::Disconnect()
 {
-	activeNode = originNode;
-	activeFolder = originNode->GetRoot();
+	activeNode = activeAccount->GetOriginNode();
+	activeFolder = activeNode->GetRoot();
 }
 
 void VM::SetActiveFolder(Folder* _folder)

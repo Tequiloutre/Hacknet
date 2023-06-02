@@ -2,6 +2,7 @@
 
 #include <map>
 #include "Network/Node.h"
+#include "nlohmann/json.hpp"
 
 class WAN
 {
@@ -15,4 +16,7 @@ public:
 	
 	static void AddNode(Node* _node);
 	static std::string GetRandomIP();
+
+	static nlohmann::json ToJson();
+	static WAN FromJson(const nlohmann::json& _json);
 };
