@@ -14,6 +14,7 @@ class VM
 {
 	inline static std::string name = "Hacknet";
 	inline static std::string version = "0.1";
+	inline static std::vector<Account*> accounts;
 	inline static Account* activeAccount = nullptr;
 	inline static bool isOn = false;
 	inline static bool isBusy = false;
@@ -63,4 +64,13 @@ public:
 private:
 	
 	static void InitCommands();
+	static void LoadAccounts();
+
+	static bool AccountExist(const std::string& _username);
+	static void CreateAccount(const std::string& _name, const std::string& _username, const std::string& _password);
+	static bool LoadAccount(const std::string& _username, const std::string& _password);
+
+	static void ShowMainScreen();
+	static void ShowCreateAccountScreen();
+	static void ShowLoadAccountScreen();
 };

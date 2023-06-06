@@ -1,7 +1,6 @@
 ﻿#include "VM.h"
 
 #include <iostream>
-
 #include "Saver.h"
 #include "Network/Account.h"
 #include "System/Interpretor.h"
@@ -24,12 +23,89 @@ bool VM::Execute(const std::string& _commandName, const std::vector<std::string>
 
 void VM::StartUp()
 {
-	isOn = true;
 	Log("Starting {} v{}...", name, version);
 
-	Node* _originNode = new Node
+	LoadAccounts();
+	ShowMainScreen();
+
+	InitCommands();
+	isOn = true;
+}
+
+void VM::Update()
+{
+	if (isBusy) return;
+	cout << endl << activeAccount->GetUsername() << '@' << activeNode->GetName() << ":" << activeFolder->GetPath() << "/$ ";
+	string args;
+	getline(cin, args);
+	Interpretor::Read(args);
+}
+
+void VM::Shutdown()
+{
+	Log("Shutting down...");
+	
+	for (const auto _command : commands)
+		delete _command;
+
+	isOn = false;
+}
+
+void VM::Connect(Node* _node)
+{
+	activeNode = _node;
+	activeFolder = _node->GetRoot();
+}
+
+void VM::Disconnect()
+{
+	activeNode = WAN::GetNode(activeAccount->GetOriginNode());
+	activeFolder = activeNode->GetRoot();
+}
+
+void VM::SetActiveFolder(Folder* _folder)
+{
+	activeFolder = _folder;
+}
+
+void VM::InitCommands()
+{
+	commands.push_back(new cd("cd"));
+	commands.push_back(new connect("connect"));
+	commands.push_back(new disconnect("disconnect"));
+	commands.push_back(new ip("ip"));
+	commands.push_back(new ls("ls"));
+	commands.push_back(new probe("probe"));
+	commands.push_back(new say("say"));
+	commands.push_back(new shutdown("shutdown"));
+}
+
+void VM::LoadAccounts()
+{
+	const vector<string> _accountNames = Saver::GetAccountList();
+	for (const string& _accountName : _accountNames)
+	{
+		Account* _account = Saver::LoadAccount(_accountName);
+		if (!_account) continue;
+		accounts.push_back(_account);
+	}
+}
+
+bool VM::AccountExist(const std::string& _username)
+{
+	for (const Account* _account : accounts)
+	{
+		if (_account->GetUsername() != _username) continue;
+		return true;
+	}
+	return false;
+}
+
+void VM::CreateAccount(const std::string& _name, const std::string& _username, const std::string& _password)
+{
+	Node* _node = new Node
 	(
-		"Tequiloutre-PC",
+		_name + "-PC",
 		WAN::GetRandomIP(),
 		vector<Port*>
 		{
@@ -38,18 +114,13 @@ void VM::StartUp()
 		},
 		5
 	);
+	WAN::AddNode(_node);
 
-	WAN::AddNode(_originNode);
+	Account* _account = new Account(_name, _username, _password, _node->GetIP());
+	accounts.push_back(_account);
+	activeAccount = _account;
 
-	activeAccount = new Account
-	(
-		"Tequiloutre",
-		"tequiloutre",
-		"password",
-		_originNode
-	);
-	
-	Connect(_originNode);
+	Connect(_node);
 	activeFolder->AddFolder(new Folder("test"));
 	
 	WAN::AddNode(new Node
@@ -75,52 +146,95 @@ void VM::StartUp()
 		},
 		2
 	));
+
+	Saver::SaveGame();
+}
+
+bool VM::LoadAccount(const std::string& _username, const std::string& _password)
+{
+	for (Account* _account : accounts)
+	{
+		if (_account->GetUsername() != _username) continue;
+		if (_account->GetPassword() != _password) break;
+		activeAccount = _account;
+		Saver::LoadGame(activeAccount->GetUsername());
+		Connect(WAN::GetNode(activeAccount->GetOriginNode()));
+		return true;
+	}
+	return false;
+}
+
+void VM::ShowMainScreen()
+{
+	Log("Welcome.");
+	Log("1. Create account");
+	Log("2. Load account");
+	Log("3. Quit");
+
+	int _choice = -1;
+	while (_choice < 1 || _choice > 3)
+	{
+		string _input;
+		getline(cin, _input);
+		_choice = stoi(_input);
+	}
+
+	switch (_choice)
+	{
+		case 1: ShowCreateAccountScreen(); break;
+		case 2: ShowLoadAccountScreen(); break;
+		case 3: Shutdown(); break;
+		default: break;
+	}
+}
+
+void VM::ShowCreateAccountScreen()
+{
+	bool _loggedIn = false;
 	
-	InitCommands();
+	while (!_loggedIn)
+	{
+		string _name;
+		cout << "Name : ";
+		getline(cin, _name);
+
+		string _username = _name;
+		ranges::transform(_username, _username.begin(),
+			[](const unsigned char _c){ return std::tolower(_c); });
+
+		if (AccountExist(_username))
+		{
+			cout << "Account " << _name << " already exists" << endl;
+			continue;
+		}
+
+		string _password;
+		cout << "Password : ";
+		getline(cin, _password);
+
+		CreateAccount(_name, _username, _password);
+		_loggedIn = true;
+	}
 }
 
-void VM::Update()
+void VM::ShowLoadAccountScreen()
 {
-	if (isBusy) return;
-	cout << endl << activeAccount->GetUsername() << '@' << activeNode->GetName() << ":" << activeFolder->GetPath() << "/$ ";
-	string args;
-	getline(cin, args);
-	Interpretor::Read(args);
-}
+	bool _loggedIn = false;
+	
+	Log("Available accounts :");
+	for (const Account* _account : accounts)
+		Log(" - {}", _account->GetUsername());
 
-void VM::Shutdown()
-{
-	for (const auto _command : commands)
-		delete _command;
+	while (!_loggedIn)
+	{
+		string _username;
+		cout << "Username : ";
+		getline(cin, _username);
 
-	isOn = false;
-}
+		string _password;
+		cout << "Password : ";
+		getline(cin, _password);
 
-void VM::Connect(Node* _node)
-{
-	activeNode = _node;
-	activeFolder = _node->GetRoot();
-}
-
-void VM::Disconnect()
-{
-	activeNode = activeAccount->GetOriginNode();
-	activeFolder = activeNode->GetRoot();
-}
-
-void VM::SetActiveFolder(Folder* _folder)
-{
-	activeFolder = _folder;
-}
-
-void VM::InitCommands()
-{
-	commands.push_back(new cd("cd"));
-	commands.push_back(new connect("connect"));
-	commands.push_back(new disconnect("disconnect"));
-	commands.push_back(new ip("ip"));
-	commands.push_back(new ls("ls"));
-	commands.push_back(new probe("probe"));
-	commands.push_back(new say("say"));
-	commands.push_back(new shutdown("shutdown"));
+		_loggedIn = LoadAccount(_username, _password);
+	}
 }

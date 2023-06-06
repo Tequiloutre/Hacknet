@@ -12,11 +12,10 @@ WAN::~WAN()
 	nodes.clear();
 }
 
-bool WAN::GetNode(const string& _targetIP, Node** _outNode)
+Node* WAN::GetNode(const string& _targetIP)
 {
-	if (!nodes.contains(_targetIP)) return false;
-	*_outNode = nodes[_targetIP];
-	return true;
+	if (!nodes.contains(_targetIP)) return nullptr;
+	return nodes[_targetIP];
 }
 
 void WAN::AddNode(Node* _node)
@@ -38,11 +37,19 @@ json WAN::ToJson()
 	json _json;
 
 	int _index = 0;
-	for (const auto _node : nodes)
+	for (const auto& _node : nodes)
 	{
 		_json["nodes"][_index] = _node.second->ToJson();
 		++_index;
 	}
 
 	return _json;
+}
+
+void WAN::FromJson(const json& _json)
+{
+	const vector<json> _nodes = _json["nodes"];
+	const size_t _nodeCount = _nodes.size();
+	for (size_t i = 0; i < _nodeCount; ++i)
+		AddNode(new Node(Node::FromJson(_nodes[i])));
 }

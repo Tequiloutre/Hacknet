@@ -9,16 +9,16 @@ class Account
 	std::string name = "Name";
 	std::string username = "name";
 	std::string password = "password";
-	Node* originNode = nullptr;
+	std::string originNode = "127.0.0.1";
 	
 public:
 
-	Account(const std::string& _name, const std::string& _username, const std::string& _password, Node* _originNode);
+	Account(const std::string& _name, const std::string& _username, const std::string& _password, const std::string& _originNode);
 
 	std::string GetName() const { return name; }
 	std::string GetUsername() const { return username; }
 	std::string GetPassword() const { return password; }
-	Node* GetOriginNode() const { return originNode; }
+	std::string GetOriginNode() const { return originNode; }
 
 	nlohmann::json ToJson();
 	static Account FromJson(const nlohmann::json& _json);

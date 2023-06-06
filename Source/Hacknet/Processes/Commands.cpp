@@ -45,8 +45,8 @@ bool connect::Execute(const std::vector<std::string>& _args)
 	if (_length != 1) return false;
 
 	const string& _targetIP = _args[0];	
-	Node* _targetNode = nullptr;
-	if (!WAN::GetNode(_targetIP, &_targetNode))
+	Node* _targetNode = WAN::GetNode(_targetIP);
+	if (!_targetNode)
 	{
 		VM::Log("Can't find node : {}", _targetIP);
 		return false;
@@ -116,8 +116,7 @@ bool say::Execute(const std::vector<std::string>& _args)
 bool shutdown::Execute(const std::vector<std::string>& _args)
 {
 	if (!_args.empty()) return false;
-
-	VM::Log("Shutting down...");
+	
 	VM::Shutdown();
 	
 	return true;

@@ -4,7 +4,7 @@
 
 using namespace nlohmann;
 
-Account::Account(const std::string& _name, const std::string& _username, const std::string& _password, Node* _originNode)
+Account::Account(const std::string& _name, const std::string& _username, const std::string& _password, const std::string& _originNode)
 {
 	name = _name;
 	username = _username;
@@ -19,19 +19,18 @@ json Account::ToJson()
 	_json["name"] = name;
 	_json["username"] = username;
 	_json["password"] = password;
+	_json["originNode"] = originNode;
 	
 	return _json;
 }
 
 Account Account::FromJson(const json& _json)
 {
-	Node* _node = nullptr;
-	WAN::GetNode(_json["originNodeIP"], &_node);
 	return
 	{
 		_json["name"],
 		_json["username"],
 		_json["password"],
-		_node
+		_json["originNode"]
 	};
 }

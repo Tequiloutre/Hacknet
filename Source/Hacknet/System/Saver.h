@@ -1,5 +1,8 @@
 ﻿#pragma once
 #include <string>
+#include <vector>
+
+#include "Network/Account.h"
 
 class Node;
 
@@ -23,7 +26,8 @@ public:
 	static void SaveNode(Node* _node);
 	static Node* LoadNode(const std::string& _name);
 
+	static std::vector<std::string> GetAccountList();
 	static void SaveGame();
-	static void LoadAccount(const std::string& _accountName);
-	static void LoadGame();
+	static Account* LoadAccount(const std::string& _accountName);
+	static void LoadGame(const std::string& _account);
 };

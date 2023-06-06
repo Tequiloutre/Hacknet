@@ -12,11 +12,11 @@ public:
 
 	~WAN();
 	
-	static bool GetNode(const std::string& _targetIP, Node** _outNode);
+	static Node* GetNode(const std::string& _targetIP);
 	
 	static void AddNode(Node* _node);
 	static std::string GetRandomIP();
 
 	static nlohmann::json ToJson();
-	static WAN FromJson(const nlohmann::json& _json);
+	static void FromJson(const nlohmann::json& _json);
 };
