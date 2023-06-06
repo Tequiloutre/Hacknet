@@ -32,6 +32,16 @@ Node::~Node()
 	ports.clear();
 }
 
+Port* Node::GetPort(const int _portNumber) const
+{
+	for (Port* _port : ports)
+	{
+		if (_port->GetNumber() != _portNumber) continue;
+		return _port;
+	}
+	return nullptr;
+}
+
 json Node::ToJson()
 {
 	json _json;

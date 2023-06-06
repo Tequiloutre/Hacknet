@@ -93,7 +93,7 @@ bool probe::Execute(const std::vector<std::string>& _args)
 	for (size_t i = 0; i < _count; ++i)
 	{
 		const Port* _port = _ports[i];
-		VM::Log("{}\t\t{}\t\t{}", _port->GetNumber(), _port->GetType(), _port->IsOpened() ? "opened" : "closed");
+		VM::Log("{}\t\t{}\t\t{}", _port->GetNumber(), _port->ToString(), _port->IsOpened() ? "opened" : "closed");
 	}
 	VM::Log("Open ports needed for hack : {}", _currentNode->GetRequiredPorts());
 	return true;

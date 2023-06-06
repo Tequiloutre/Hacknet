@@ -17,7 +17,9 @@ class Port
 
 public:
 
-	std::string GetType() const;
+	static std::string PortToString(PortType _type);
+
+	PortType GetType() const { return type; }
 	int GetNumber() const { return number; }
 	bool IsOpened() const { return isOpened; }
 	
@@ -31,4 +33,6 @@ public:
 
 	nlohmann::json ToJson();
 	static Port FromJson(const nlohmann::json& _json);
+	
+	std::string ToString() const { return PortToString(type); }
 };

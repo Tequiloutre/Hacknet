@@ -22,6 +22,7 @@ public:
 	std::string GetIP() const { return ip; }
 	Folder* GetRoot() const { return rootFolder; }
 	std::vector<Port*> GetPorts() const { return ports; }
+	Port* GetPort(int _portNumber) const;
 	int GetRequiredPorts() const { return requiredPorts; }
 
 	nlohmann::json ToJson();

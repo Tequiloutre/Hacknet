@@ -2,9 +2,9 @@
 
 #include <nlohmann/json.hpp>
 
-std::string Port::GetType() const
+std::string Port::PortToString(const PortType _type)
 {
-	switch (type)
+	switch (_type)
 	{
 		case None: return "None";
 		case SSH: return "SSH";

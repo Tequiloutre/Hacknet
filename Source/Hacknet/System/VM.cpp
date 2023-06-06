@@ -6,6 +6,7 @@
 #include "System/Interpretor.h"
 #include "Processes/Commands.h"
 #include "Network/WAN.h"
+#include "Processes/PortProcess.h"
 
 using namespace std;
 
@@ -78,6 +79,8 @@ void VM::InitCommands()
 	commands.push_back(new probe("probe"));
 	commands.push_back(new say("say"));
 	commands.push_back(new shutdown("shutdown"));
+	commands.push_back(new PortProcess("SSHCrack", SSH));
+	commands.push_back(new PortProcess("FTPBounce", FTP));
 }
 
 void VM::LoadAccounts()
