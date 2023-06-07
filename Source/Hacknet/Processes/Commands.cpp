@@ -106,6 +106,17 @@ bool ls::Execute(const vector<string>& _args)
 	return true;
 }
 
+bool mkdir::Execute(const vector<string>& _args)
+{
+	if (_args.empty()) return false;
+
+	Folder* _activeFolder = VM::GetActiveFolder();
+	for (const string& _arg : _args)
+		_activeFolder->AddFolder(new Folder(_arg));
+
+	return true;
+}
+
 bool probe::Execute(const vector<string>& _args)
 {
 	if (!_args.empty()) return false;
@@ -132,6 +143,21 @@ bool rm::Execute(const std::vector<std::string>& _args)
 		const File* _file = _folder->GetFileByName(_arg);
 		if (!_file) continue;
 		_folder->RemoveFile(_file);
+	}
+
+	return true;
+}
+
+bool rmdir::Execute(const std::vector<std::string>& _args)
+{
+	if (_args.empty()) return false;
+
+	Folder* _activeFolder = VM::GetActiveFolder();
+	for (const string& _arg : _args)
+	{
+		const Folder* _folder = _activeFolder->GetFolderByName(_arg);
+		if (!_folder) continue;
+		_activeFolder->RemoveFolder(_folder);
 	}
 
 	return true;

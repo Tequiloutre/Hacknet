@@ -73,7 +73,11 @@ bool Folder::ContainsFolder(const std::string& _folderName) const
 
 void Folder::AddFolder(Folder* _folder)
 {
-	if (ContainsFolder(_folder->GetName())) return;
+	if (ContainsFolder(_folder->GetName()))
+	{
+		delete _folder;
+		return;
+	}
 	_folder->SetParentFolder(this);
 	folders.push_back(_folder);
 }

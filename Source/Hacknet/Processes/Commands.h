@@ -58,6 +58,14 @@ public:
 	bool Execute(const std::vector<std::string>& _args) override;
 };
 
+class mkdir : public Process
+{
+public:
+
+	mkdir(const std::string& _name) : Process(_name) { }
+	bool Execute(const std::vector<std::string>& _args) override;
+};
+
 class probe : public Process
 {
 public:
@@ -71,6 +79,14 @@ class rm : public Process
 public:
 
 	rm(const std::string& _name) : Process(_name) { }
+	bool Execute(const std::vector<std::string>& _args) override;
+};
+
+class rmdir : public Process
+{
+public:
+
+	rmdir(const std::string& _name) : Process(_name) { }
 	bool Execute(const std::vector<std::string>& _args) override;
 };
 
