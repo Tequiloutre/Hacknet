@@ -14,6 +14,17 @@ Folder* Folder::GetFolderByName(const std::string& _folderName) const
 	return nullptr;
 }
 
+File* Folder::GetFileByName(const std::string& _fileName) const
+{
+	const size_t _count = files.size();
+	for (size_t i = 0; i < _count; ++i)
+	{
+		if (files[i]->GetName() != _fileName) continue;
+		return files[i];
+	}
+	return nullptr;
+}
+
 std::string Folder::GetPath() const
 {
 	string _path = name;
@@ -74,6 +85,7 @@ void Folder::RemoveFolder(const Folder* _folder)
 	for (size_t i = 0; i < _folderCount; ++i)
 	{
 		if (folders[i] != _folder) continue;
+		delete folders[i];
 		folders.erase(folders.begin() + i);
 	}
 }
@@ -87,7 +99,11 @@ bool Folder::ContainsFile(const std::string& _fileName) const
 
 void Folder::AddFile(File* _file)
 {
-	if (ContainsFile(_file->GetName())) return;
+	if (ContainsFile(_file->GetName()))
+	{
+		delete _file;
+		return;
+	}
 	files.push_back(_file);
 }
 
@@ -97,7 +113,9 @@ void Folder::RemoveFile(const File* _file)
 	for (size_t i = 0; i < _fileCount; ++i)
 	{
 		if (files[i] != _file) continue;
+		delete files[i];
 		files.erase(files.begin() + i);
+		return;
 	}
 }
 

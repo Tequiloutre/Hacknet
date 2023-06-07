@@ -78,16 +78,19 @@ void VM::SetActiveFolder(Folder* _folder)
 
 void VM::InitCommands()
 {
+	commands.push_back(new cat("cat"));
 	commands.push_back(new cd("cd"));
 	commands.push_back(new connect("connect"));
 	commands.push_back(new disconnect("disconnect"));
 	commands.push_back(new ip("ip"));
 	commands.push_back(new ls("ls"));
-	commands.push_back(new probe("probe"));
-	commands.push_back(new say("say"));
-	commands.push_back(new shutdown("shutdown"));
 	commands.push_back(new PortProcess("SSHCrack", SSH));
 	commands.push_back(new PortProcess("FTPBounce", FTP));
+	commands.push_back(new probe("probe"));
+	commands.push_back(new rm("rm"));
+	commands.push_back(new say("say"));
+	commands.push_back(new shutdown("shutdown"));
+	commands.push_back(new touch("touch"));
 }
 
 void VM::LoadAccounts()

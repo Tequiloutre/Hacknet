@@ -19,6 +19,7 @@ public:
 	std::vector<Folder*> GetFolders() const { return folders; }
 	Folder* GetFolderByName(const std::string& _folderName) const;
 	std::vector<File*> GetFiles() const { return files; }
+	File* GetFileByName(const std::string& _fileName) const;
 	std::string GetPath() const;
 	
 	Folder(const std::string& _name);

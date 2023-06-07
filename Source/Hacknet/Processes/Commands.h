@@ -4,6 +4,14 @@
 
 class Folder;
 
+class cat : public Process
+{
+public:
+	
+	cat(const std::string& _name) : Process(_name) { }
+	bool Execute(const std::vector<std::string>& _args) override;
+};
+
 class cd : public Process
 {
 public:
@@ -58,6 +66,14 @@ public:
 	bool Execute(const std::vector<std::string>& _args) override;
 };
 
+class rm : public Process
+{
+public:
+
+	rm(const std::string& _name) : Process(_name) { }
+	bool Execute(const std::vector<std::string>& _args) override;
+};
+
 class say : public Process
 {
 public:
@@ -74,6 +90,10 @@ public:
 	bool Execute(const std::vector<std::string>& _args) override;
 };
 
+class touch : public Process
+{
+public:
 
-
-
+	touch(const std::string& _name) : Process(_name) { }
+	bool Execute(const std::vector<std::string>& _args) override;
+};

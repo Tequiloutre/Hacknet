@@ -5,6 +5,22 @@
 
 using namespace std;
 
+bool cat::Execute(const std::vector<std::string>& _args)
+{
+	if (_args.size() != 1) return false;
+
+	const string& _targetFile = _args[0];
+	const File* _file = VM::GetActiveFolder()->GetFileByName(_targetFile);
+	if (!_file)
+	{
+		VM::Log("cat : can't find {}", _targetFile);
+		return false;
+	}
+
+	VM::Log(_file->GetContent());
+	return true;
+}
+
 bool cd::Execute(const vector<string>& _args)
 {
 	if (_args.size() != 1) return false;
@@ -106,6 +122,21 @@ bool probe::Execute(const vector<string>& _args)
 	return true;
 }
 
+bool rm::Execute(const std::vector<std::string>& _args)
+{
+	if (_args.empty()) return false;
+
+	Folder* _folder = VM::GetActiveFolder();
+	for (const string& _arg : _args)
+	{
+		const File* _file = _folder->GetFileByName(_arg);
+		if (!_file) continue;
+		_folder->RemoveFile(_file);
+	}
+
+	return true;
+}
+
 bool say::Execute(const vector<string>& _args)
 {
 	const size_t _length = _args.size();
@@ -129,4 +160,13 @@ bool shutdown::Execute(const vector<string>& _args)
 	return true;
 }
 
+bool touch::Execute(const vector<string>& _args)
+{
+	if (_args.empty()) return false;
 
+	Folder* _folder = VM::GetActiveFolder();
+	for (const string& _arg : _args)
+		_folder->AddFile(new File(_arg));
+
+	return true;
+}
