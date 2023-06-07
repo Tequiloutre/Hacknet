@@ -10,6 +10,13 @@
 
 using namespace std;
 
+VM::~VM()
+{
+	for (const Account* _account : accounts)
+		delete _account;
+	accounts.clear();
+ }
+
 bool VM::Execute(const std::string& _commandName, const std::vector<std::string>& _args)
 {
 	const size_t _count = commands.size();
@@ -124,7 +131,10 @@ void VM::CreateAccount(const std::string& _name, const std::string& _username, c
 	activeAccount = _account;
 
 	Connect(_node);
-	activeFolder->AddFolder(new Folder("test"));
+	Folder* _testFolder = new Folder("test");
+	_testFolder->AddFile(new File("test.txt", "gg you find this test file"));
+	activeFolder->AddFolder(_testFolder);
+	activeFolder->AddFile(new File("x-system.sys", "boup bip boup"));
 	
 	WAN::AddNode(new Node
 	(

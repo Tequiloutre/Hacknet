@@ -26,6 +26,8 @@ class VM
 
 public:
 
+	~VM();
+
 	static std::string GetName() { return name; }
 	static std::string GetVersion() { return version; }
 	static Account* GetActiveAccount() { return activeAccount; }

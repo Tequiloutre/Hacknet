@@ -39,9 +39,13 @@ Folder::Folder(const std::string& _name, const std::vector<Folder*>& _folders)
 
 Folder::~Folder()
 {
-	for (const auto _folder : folders)
+	for (const Folder* _folder : folders)
 		delete _folder;
 	folders.clear();
+
+	for (const File* _file : files)
+		delete _file;
+	files.clear();
 }
 
 void Folder::SetParentFolder(Folder* _parent)
@@ -61,6 +65,40 @@ void Folder::AddFolder(Folder* _folder)
 	if (ContainsFolder(_folder->GetName())) return;
 	_folder->SetParentFolder(this);
 	folders.push_back(_folder);
+}
+
+void Folder::RemoveFolder(const Folder* _folder)
+{
+	if (!ContainsFolder(_folder->GetName())) return;
+	const size_t _folderCount = folders.size();
+	for (size_t i = 0; i < _folderCount; ++i)
+	{
+		if (folders[i] != _folder) continue;
+		folders.erase(folders.begin() + i);
+	}
+}
+
+bool Folder::ContainsFile(const std::string& _fileName) const
+{
+	for (const File* _file : files)
+		if (_file->GetName() == _fileName) return true;
+	return false;
+}
+
+void Folder::AddFile(File* _file)
+{
+	if (ContainsFile(_file->GetName())) return;
+	files.push_back(_file);
+}
+
+void Folder::RemoveFile(const File* _file)
+{
+	const size_t _fileCount = files.size();
+	for (size_t i = 0; i < _fileCount; ++i)
+	{
+		if (files[i] != _file) continue;
+		files.erase(files.begin() + i);
+	}
 }
 
 json Folder::ToJson()

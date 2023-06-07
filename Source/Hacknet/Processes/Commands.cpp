@@ -5,11 +5,11 @@
 
 using namespace std;
 
-bool cd::Execute(const std::vector<std::string>& _args)
+bool cd::Execute(const vector<string>& _args)
 {
 	if (_args.size() != 1) return false;
 	
-	const std::string& _target = _args[0];
+	const string& _target = _args[0];
 
 	if (_target == "..")
 	{
@@ -24,7 +24,7 @@ bool cd::Execute(const std::vector<std::string>& _args)
 	GoToFolder(_targetFolder);
 	return true;
 }
-Folder* cd::GetChildFolder(const std::string& _targetFolderName)
+Folder* cd::GetChildFolder(const string& _targetFolderName)
 {
 	const Folder* _activeFolder = VM::GetActiveFolder();
 	return _activeFolder->GetFolderByName(_targetFolderName);
@@ -39,7 +39,7 @@ void cd::GoToFolder(Folder* _targetFolder)
 	VM::SetActiveFolder(_targetFolder);
 }
 
-bool connect::Execute(const std::vector<std::string>& _args)
+bool connect::Execute(const vector<string>& _args)
 {
 	const size_t _length = _args.size();
 	if (_length != 1) return false;
@@ -57,33 +57,40 @@ bool connect::Execute(const std::vector<std::string>& _args)
 	return true;
 }
 
-bool disconnect::Execute(const std::vector<std::string>& _args)
+bool disconnect::Execute(const vector<string>& _args)
 {
 	if (!_args.empty()) return false;
 	VM::Disconnect();
 	return true;
 }
 
-bool ip::Execute(const std::vector<std::string>& _args)
+bool ip::Execute(const vector<string>& _args)
 {
 	if (!_args.empty()) return false;
 	VM::Log("eth0: {}", VM::GetActiveNode()->GetIP());
 	return true;
 }
 
-bool ls::Execute(const std::vector<std::string>& _args)
+bool ls::Execute(const vector<string>& _args)
 {
 	if (!_args.empty()) return false;
 
-	const std::vector<Folder*> _folders = VM::GetActiveFolder()->GetFolders();
-	const size_t _count = _folders.size();
-	for (size_t i = 0; i < _count; ++i)
-		VM::Log("{}", _folders[i]->GetName());
+	const Folder* _activeFolder = VM::GetActiveFolder();
+
+	const vector<Folder*> _folders = _activeFolder->GetFolders();
+	const size_t _folderCount = _folders.size();
+	for (size_t i = 0; i < _folderCount; ++i)
+		VM::Log("{}/", _folders[i]->GetName());
+
+	const vector<File*> _files = _activeFolder->GetFiles();
+	const size_t _fileCount = _files.size();
+	for (size_t i = 0; i < _fileCount; ++i)
+		VM::Log("{}", _files[i]->GetName());
 	
 	return true;
 }
 
-bool probe::Execute(const std::vector<std::string>& _args)
+bool probe::Execute(const vector<string>& _args)
 {
 	if (!_args.empty()) return false;
 	const Node* _currentNode = VM::GetActiveNode();
@@ -99,7 +106,7 @@ bool probe::Execute(const std::vector<std::string>& _args)
 	return true;
 }
 
-bool say::Execute(const std::vector<std::string>& _args)
+bool say::Execute(const vector<string>& _args)
 {
 	const size_t _length = _args.size();
 	if (_length < 1) return false;
@@ -113,7 +120,7 @@ bool say::Execute(const std::vector<std::string>& _args)
 	return true;
 }
 
-bool shutdown::Execute(const std::vector<std::string>& _args)
+bool shutdown::Execute(const vector<string>& _args)
 {
 	if (!_args.empty()) return false;
 	
