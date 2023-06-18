@@ -27,9 +27,14 @@ Node::Node(const std::string& _name, const std::string& _ip, Folder* _rootFolder
 Node::~Node()
 {
 	delete rootFolder;
+	
 	for (const auto _port : ports)
 		delete _port;
 	ports.clear();
+	
+	for (const auto _account : accounts)
+		delete _account;
+	accounts.clear();
 }
 
 Port* Node::GetPort(const int _portNumber) const
@@ -40,6 +45,24 @@ Port* Node::GetPort(const int _portNumber) const
 		return _port;
 	}
 	return nullptr;
+}
+
+Account* Node::Login(const std::string& _username, const std::string& _password) const
+{
+	for (Account* _account : accounts)
+	{
+		if (_account->GetUsername() != _username) continue;
+		if (_account->GetPassword() != _password) return nullptr;
+		return _account;
+	}
+	return nullptr;
+}
+
+void Node::AddAccount(Account* _account)
+{
+	for (const Account* _tempAccount : accounts)
+		if (_tempAccount->GetUsername() == _account->GetUsername()) return;
+	accounts.push_back(_account);
 }
 
 json Node::ToJson()

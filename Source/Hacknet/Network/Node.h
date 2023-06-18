@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include <string>
 
+#include "Account.h"
 #include "Network/Port.h"
 #include "FileSystem/Folder.h"
 
@@ -11,6 +12,7 @@ class Node
 	Folder* rootFolder = nullptr;
 	std::vector<Port*> ports;
 	int requiredPorts = 0;
+	std::vector<Account*> accounts;
 
 public:
 
@@ -24,6 +26,9 @@ public:
 	std::vector<Port*> GetPorts() const { return ports; }
 	Port* GetPort(int _portNumber) const;
 	int GetRequiredPorts() const { return requiredPorts; }
+	Account* Login(const std::string& _username, const std::string& _password) const;
+
+	void AddAccount(Account* _account);
 
 	nlohmann::json ToJson();
 	static Node FromJson(const nlohmann::json& _json);
