@@ -18,12 +18,6 @@ public:
 	
 	cd(const std::string& _name) : Process(_name) { }
 	bool Execute(const std::vector<std::string>& _args) override;
-
-private:
-	
-	static Folder* GetChildFolder(const std::string& _targetFolderName);
-	static Folder* GetParentFolder();
-	static void GoToFolder(Folder* _targetFolder);
 };
 
 class connect : public Process
