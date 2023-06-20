@@ -23,7 +23,11 @@ bool cat::Execute(const std::vector<std::string>& _args)
 
 bool cd::Execute(const vector<string>& _args)
 {
-	if (_args.size() != 1) return false;
+	if (_args.size() != 1)
+	{
+		VM::Log("[cd] Usage : cd <path>");
+		return false;
+	}
 	
 	const string& _target = _args[0];
 
@@ -40,19 +44,21 @@ bool cd::Execute(const vector<string>& _args)
 
 bool connect::Execute(const vector<string>& _args)
 {
-	const size_t _length = _args.size();
-	if (_length != 1) return false;
+	if (_args.size() != 1)
+	{
+		VM::Log("[connect] Usage : connect <ip>");
+		return false;
+	}
 
 	const string& _targetIP = _args[0];	
 	Node* _targetNode = WAN::GetNode(_targetIP);
 	if (!_targetNode)
 	{
-		VM::Log("Can't find node : {}", _targetIP);
+		VM::Log("[connect] Can't find node at : {}", _targetIP);
 		return false;
 	}
 
 	VM::Connect(_targetNode);
-
 	return true;
 }
 
