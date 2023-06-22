@@ -1,9 +1,11 @@
 ﻿#include "Node.h"
 
-#include <nlohmann/json.hpp>
+#include "FileSystem/Folder.h"
+#include "Network/Account.h"
+#include "Network/Port.h"
 
-using namespace std;
 using namespace nlohmann;
+using namespace std;
 
 Node::Node(const std::string& _name, const std::string& _ip, const std::vector<Port*>& _ports, const int _requiredPorts)
 {
@@ -47,6 +49,13 @@ Port* Node::GetPort(const int _portNumber) const
 	return nullptr;
 }
 
+void Node::AddAccount(Account* _account)
+{
+	for (const Account* _tempAccount : accounts)
+		if (_tempAccount->GetUsername() == _account->GetUsername()) return;
+	accounts.push_back(_account);
+}
+
 Account* Node::Login(const std::string& _username, const std::string& _password) const
 {
 	for (Account* _account : accounts)
@@ -56,13 +65,6 @@ Account* Node::Login(const std::string& _username, const std::string& _password)
 		return _account;
 	}
 	return nullptr;
-}
-
-void Node::AddAccount(Account* _account)
-{
-	for (const Account* _tempAccount : accounts)
-		if (_tempAccount->GetUsername() == _account->GetUsername()) return;
-	accounts.push_back(_account);
 }
 
 json Node::ToJson()

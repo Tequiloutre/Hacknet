@@ -5,10 +5,10 @@
 #include <string>
 #include <vector>
 
-#include "Processes/Process.h"
-#include "Network/Node.h"
-
 class Account;
+class Node;
+class Process;
+class Folder;
 
 class VM
 {

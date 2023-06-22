@@ -1,6 +1,13 @@
 #include "PortProcess.h"
 
+#include "Network/Node.h"
+#include "Network/Port.h"
 #include "System/VM.h"
+
+PortProcess::PortProcess(const std::string& _name, const PortType _portType) : Process(_name)
+{
+	targetType = _portType;
+}
 
 bool PortProcess::Execute(const std::vector<std::string>& _args)
 {

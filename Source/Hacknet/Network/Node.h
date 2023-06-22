@@ -1,9 +1,12 @@
 ﻿#pragma once
-#include <string>
 
-#include "Account.h"
-#include "Network/Port.h"
-#include "FileSystem/Folder.h"
+#include "nlohmann/json.hpp"
+#include <string>
+#include <vector>
+
+class Account;
+class Folder;
+class Port;
 
 class Node
 {
@@ -26,9 +29,9 @@ public:
 	std::vector<Port*> GetPorts() const { return ports; }
 	Port* GetPort(int _portNumber) const;
 	int GetRequiredPorts() const { return requiredPorts; }
-	Account* Login(const std::string& _username, const std::string& _password) const;
 
 	void AddAccount(Account* _account);
+	Account* Login(const std::string& _username, const std::string& _password) const;
 
 	nlohmann::json ToJson();
 	static Node* FromJson(const nlohmann::json& _json);

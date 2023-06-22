@@ -2,15 +2,10 @@
 
 #include <nlohmann/json.hpp>
 
-std::string Port::PortToString(const PortType _type)
+Port::Port(const PortType _type, const int _number)
 {
-	switch (_type)
-	{
-		case None: return "None";
-		case SSH: return "SSH";
-		case FTP: return "FTP";
-	}
-	return "None";
+	type = _type;
+	number = _number;
 }
 
 nlohmann::json Port::ToJson()
@@ -31,4 +26,15 @@ Port* Port::FromJson(const nlohmann::json& _json)
 		_json["type"],
 		_json["number"]
 	);
+}
+
+std::string Port::PortToString(const PortType _type)
+{
+	switch (_type)
+	{
+		case None: return "None";
+		case SSH: return "SSH";
+		case FTP: return "FTP";
+	}
+	return "None";
 }

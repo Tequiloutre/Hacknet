@@ -1,8 +1,9 @@
 ﻿#pragma once
 
 #include <map>
-#include "Network/Node.h"
 #include "nlohmann/json.hpp"
+
+class Node;
 
 class WAN
 {

@@ -1,7 +1,31 @@
-﻿#include "FileSystem/Folder.h"
+﻿#include "Folder.h"
 
-using namespace std;
+#include "FileSystem/File.h"
+
 using namespace nlohmann;
+using namespace std;
+
+Folder::Folder(const std::string& _name)
+{
+	name = _name;
+}
+
+Folder::Folder(const std::string& _name, const std::vector<Folder*>& _folders)
+{
+	name = _name;
+	folders = _folders;
+}
+
+Folder::~Folder()
+{
+	for (const Folder* _folder : folders)
+		delete _folder;
+	folders.clear();
+
+	for (const File* _file : files)
+		delete _file;
+	files.clear();
+}
 
 Folder* Folder::GetFolderByName(const std::string& _folderName) const
 {
@@ -35,28 +59,6 @@ std::string Folder::GetPath() const
 		_parentFolder = _parentFolder->GetParentFolder();
 	}
 	return _path;
-}
-
-Folder::Folder(const std::string& _name)
-{
-	name = _name;
-}
-
-Folder::Folder(const std::string& _name, const std::vector<Folder*>& _folders)
-{
-	name = _name;
-	folders = _folders;
-}
-
-Folder::~Folder()
-{
-	for (const Folder* _folder : folders)
-		delete _folder;
-	folders.clear();
-
-	for (const File* _file : files)
-		delete _file;
-	files.clear();
 }
 
 void Folder::SetParentFolder(Folder* _parent)

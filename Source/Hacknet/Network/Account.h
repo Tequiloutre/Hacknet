@@ -1,15 +1,8 @@
 #pragma once
-#include <string>
+
+#include "Network/AccountType.h"
 #include <nlohmann/json.hpp>
-
-class Node;
-
-enum AccountType
-{
-	Guest,
-	User,
-	Admin
-};
+#include <string>
 
 class Account
 {

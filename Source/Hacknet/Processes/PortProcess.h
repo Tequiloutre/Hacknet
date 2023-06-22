@@ -1,5 +1,6 @@
 #pragma once
-#include "Network/Port.h"
+
+#include "Network/PortType.h"
 #include "Processes/Process.h"
 
 class PortProcess : public Process
@@ -8,10 +9,7 @@ class PortProcess : public Process
 
 public:
 
-	PortProcess(const std::string& _name, const PortType _portType) : Process(_name)
-	{
-		targetType = _portType;
-	}
+	PortProcess(const std::string& _name, PortType _portType);
 
 	bool Execute(const std::vector<std::string>& _args) override;
 };

@@ -1,9 +1,9 @@
 ﻿#pragma once
+
 #include <string>
 #include <vector>
 
-#include "Network/Account.h"
-
+class Account;
 class Node;
 
 class Saver

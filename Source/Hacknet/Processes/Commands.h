@@ -2,8 +2,6 @@
 
 #include "Processes/Process.h"
 
-class Folder;
-
 class cat : public Process
 {
 public:

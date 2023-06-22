@@ -8,8 +8,8 @@
 #include "nlohmann/json.hpp"
 #include "VM.h"
 
-using namespace std;
 using namespace nlohmann;
+using namespace std;
 
 void Saver::InitGameDir()
 {

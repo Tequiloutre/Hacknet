@@ -1,5 +1,9 @@
 ﻿#include "Commands.h"
 
+#include "FileSystem/File.h"
+#include "FileSystem/Folder.h"
+#include "Network/Node.h"
+#include "Network/Port.h"
 #include "Network/WAN.h"
 #include "System/VM.h"
 

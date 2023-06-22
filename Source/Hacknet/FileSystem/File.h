@@ -1,12 +1,12 @@
 #pragma once
-#include <string>
 
 #include "nlohmann/json.hpp"
+#include <string>
 
 class File
 {
-	std::string name = "";
-	std::string content = "";
+	std::string name;
+	std::string content;
 	
 public:
 

@@ -1,9 +1,10 @@
 ﻿#include "WAN.h"
 
+#include "Network/Node.h"
 #include "System/VM.h"
 
-using namespace std;
 using namespace nlohmann;
+using namespace std;
 
 WAN::~WAN()
 {

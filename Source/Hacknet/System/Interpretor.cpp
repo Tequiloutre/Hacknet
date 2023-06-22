@@ -1,7 +1,7 @@
 ﻿#include "Interpretor.h"
 
-#include <vector>
 #include "System/VM.h"
+#include <vector>
 
 using namespace std;
 
