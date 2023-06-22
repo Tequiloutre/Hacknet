@@ -132,20 +132,32 @@ json Folder::ToJson()
 	const size_t _folderCount = folders.size();
 	for (size_t i = 0; i < _folderCount; ++i)
 		_json["folders"][i] = folders[i]->ToJson();
+
+	const size_t _fileCount = files.size();
+	for (size_t i = 0; i < _fileCount; ++i)
+		_json["files"][i] = files[i]->ToJson();
 	
 	return _json;
 }
 
-Folder Folder::FromJson(const json& _json)
+Folder* Folder::FromJson(const json& _json)
 {
-	Folder _folder(_json["name"]);
+	Folder* _folder = new Folder(_json["name"]);
 	
 	if (_json.contains("folders"))
 	{
 		const vector<json> _foldersJson = _json["folders"];
     	const size_t _folderCount = _foldersJson.size();
     	for (size_t i = 0; i < _folderCount; ++i)
-    		_folder.AddFolder(new Folder(FromJson(_json["folders"][i])));
+    		_folder->AddFolder(FromJson(_foldersJson[i]));
+	}
+
+	if (_json.contains("files"))
+	{
+		const vector<json> _filesJson = _json["files"];
+		const size_t _fileCount = _filesJson.size();
+		for (size_t i = 0; i < _fileCount; ++i)
+			_folder->AddFile(File::FromJson(_filesJson[i]));
 	}
 	
 	return _folder;

@@ -32,7 +32,7 @@ public:
 	void Open() { isOpened = true; }
 
 	nlohmann::json ToJson();
-	static Port FromJson(const nlohmann::json& _json);
+	static Port* FromJson(const nlohmann::json& _json);
 	
 	std::string ToString() const { return PortToString(type); }
 };

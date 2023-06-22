@@ -48,8 +48,8 @@ json WAN::ToJson()
 
 void WAN::FromJson(const json& _json)
 {
-	const vector<json> _nodes = _json["nodes"];
+	const vector<json>& _nodes = _json["nodes"];
 	const size_t _nodeCount = _nodes.size();
 	for (size_t i = 0; i < _nodeCount; ++i)
-		AddNode(new Node(Node::FromJson(_nodes[i])));
+		AddNode(Node::FromJson(_nodes[i]));
 }

@@ -75,7 +75,7 @@ Node* Saver::LoadNode(const std::string& _name)
 	_file >> _json;
 	_file.close();
 
-	Node* _node = new Node(Node::FromJson(_json));
+	Node* _node = Node::FromJson(_json);
 	WAN::AddNode(_node);
 	return _node;
 }

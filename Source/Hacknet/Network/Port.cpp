@@ -24,11 +24,11 @@ nlohmann::json Port::ToJson()
 	return _json;
 }
 
-Port Port::FromJson(const nlohmann::json& _json)
+Port* Port::FromJson(const nlohmann::json& _json)
 {
-	return
-	{
+	return new Port
+	(
 		_json["type"],
 		_json["number"]
-	};
+	);
 }

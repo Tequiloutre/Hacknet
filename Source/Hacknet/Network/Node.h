@@ -31,5 +31,5 @@ public:
 	void AddAccount(Account* _account);
 
 	nlohmann::json ToJson();
-	static Node FromJson(const nlohmann::json& _json);
+	static Node* FromJson(const nlohmann::json& _json);
 };

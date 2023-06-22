@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+#include "nlohmann/json.hpp"
+
 class File
 {
 	std::string name = "";
@@ -16,4 +18,7 @@ public:
 
 	void SetName(const std::string& _name) { name = _name; }
 	void SetContent(const std::string& _content) { content = _content; }
+
+	nlohmann::json ToJson();
+	static File* FromJson(const nlohmann::json& _json);
 };

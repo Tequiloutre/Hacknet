@@ -36,5 +36,5 @@ public:
 	void RemoveFile(const File* _file);
 
 	nlohmann::json ToJson();
-	static Folder FromJson(const nlohmann::json& _json);
+	static Folder* FromJson(const nlohmann::json& _json);
 };

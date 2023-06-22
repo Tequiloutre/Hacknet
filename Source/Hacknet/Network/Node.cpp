@@ -82,21 +82,21 @@ json Node::ToJson()
 	return _json;
 }
 
-Node Node::FromJson(const json& _json)
+Node* Node::FromJson(const json& _json)
 {
 	const vector<json> _portsJson = _json["ports"];
 	const size_t _portCount = _portsJson.size();
 	
 	vector<Port*> _ports;
 	for (size_t i = 0; i < _portCount; ++i)
-		_ports.push_back(new Port(Port::FromJson(_portsJson[i])));
+		_ports.push_back(Port::FromJson(_portsJson[i]));
 
-	return
-	{
+	return new Node
+	(
 		_json["name"],
 		_json["ip"],
-		new Folder(Folder::FromJson(_json["rootFolder"])),
+		Folder::FromJson(_json["rootFolder"]),
 		_ports,
 		_json["requiredPorts"]
-	};
+	);
 }
