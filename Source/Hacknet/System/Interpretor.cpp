@@ -13,7 +13,7 @@ void Interpretor::Read(const std::string& _line)
 	size_t _index = _line.find_first_of(' ');
 	while (_index  != string::npos)
 	{
-		_args.push_back(_line.substr(_lastIndex, _index));
+		_args.push_back(_line.substr(_lastIndex, _index - _lastIndex));
 		_lastIndex = _index + 1;
 		_index = _line.find_first_of(' ', _lastIndex);
 	}
