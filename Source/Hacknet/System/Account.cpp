@@ -2,16 +2,15 @@
 
 using namespace nlohmann;
 
-Account::Account(const std::string& _name, const std::string& _username, const std::string& _password, const std::string& _originNode, const AccountType _type)
+Account::Account(const std::string& _name, const std::string& _username, const std::string& _password, const std::string& _originNode)
 {
 	name = _name;
 	username = _username;
 	password = _password;
 	originNode = _originNode;
-	type = _type;
 }
 
-json Account::ToJson()
+json Account::ToJson() const
 {
 	json _json;
 	

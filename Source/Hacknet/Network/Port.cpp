@@ -32,9 +32,9 @@ std::string Port::PortToString(const PortType _type)
 {
 	switch (_type)
 	{
-		case None: return "None";
-		case SSH: return "SSH";
-		case FTP: return "FTP";
+		case PortType::None: return "None";
+		case PortType::SSH: return "SSH";
+		case PortType::FTP: return "FTP";
 	}
 	return "None";
 }

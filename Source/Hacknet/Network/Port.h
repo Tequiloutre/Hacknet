@@ -6,7 +6,7 @@
 
 class Port
 {
-	PortType type = None;
+	PortType type = PortType::None;
 	int number = 0;
 	bool isOpened = false;
 

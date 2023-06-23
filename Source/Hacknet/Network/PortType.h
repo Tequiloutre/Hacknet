@@ -1,6 +1,6 @@
 #pragma once
 
-enum PortType
+enum class PortType
 {
 	None,
 	SSH,

@@ -5,15 +5,17 @@
 using namespace nlohmann;
 using namespace std;
 
-Folder::Folder(const std::string& _name)
+Folder::Folder(const std::string& _name, const UserLevel _requiredLevel)
 {
 	name = _name;
+	requiredLevel = _requiredLevel;
 }
 
-Folder::Folder(const std::string& _name, const std::vector<Folder*>& _folders)
+Folder::Folder(const std::string& _name, const std::vector<Folder*>& _folders, const UserLevel _requiredLevel)
 {
 	name = _name;
 	folders = _folders;
+	requiredLevel = _requiredLevel;
 }
 
 Folder::~Folder()

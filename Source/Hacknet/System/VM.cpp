@@ -3,13 +3,14 @@
 #include "FileSystem/File.h"
 #include "FileSystem/Folder.h"
 #include <iostream>
-#include "Network/Account.h"
+#include "System/Account.h"
 #include "Network/Node.h"
 #include "Network/Port.h"
 #include "Network/WAN.h"
 #include "Processes/Commands.h"
 #include "Processes/PortProcess.h"
 #include "Saver.h"
+#include "Network/User.h"
 #include "System/Interpretor.h"
 
 using namespace std;
@@ -89,8 +90,8 @@ void VM::InitCommands()
 	commands.push_back(new ip("ip"));
 	commands.push_back(new ls("ls"));
 	commands.push_back(new mkdir("mkdir"));
-	commands.push_back(new PortProcess("SSHCrack", SSH));
-	commands.push_back(new PortProcess("FTPBounce", FTP));
+	commands.push_back(new PortProcess("SSHCrack", PortType::SSH));
+	commands.push_back(new PortProcess("FTPBounce", PortType::FTP));
 	commands.push_back(new probe("probe"));
 	commands.push_back(new rm("rm"));
 	commands.push_back(new rmdir("rmdir"));
@@ -126,10 +127,14 @@ void VM::CreateAccount(const std::string& _name, const std::string& _username, c
 	(
 		_name + "-PC",
 		WAN::GetRandomIP(),
+		vector<User*>
+		{
+			new User(_name, _username, _password, UserLevel::Admin)
+		},
 		vector<Port*>
 		{
-			new Port(SSH, 22),
-			new Port(FTP, 21)
+			new Port(PortType::SSH, 22),
+			new Port(PortType::FTP, 21)
 		},
 		5
 	);
@@ -145,17 +150,21 @@ void VM::CreateAccount(const std::string& _name, const std::string& _username, c
 	activeFolder->AddFolder(_testFolder);
 	activeFolder->AddFile(new File("x-system.sys", "boup bip boup"));
 	
-	WAN::AddNode(new Node
+	Node* _nassimNode = new Node
 	(
 		"Nassim-PC",
 		WAN::GetRandomIP(),
 		vector<Port*>
 		{
-			new Port(SSH, 22),
-			new Port(FTP, 21)
+			new Port(PortType::SSH, 22),
+			new Port(PortType::FTP, 21)
 		},
 		1
-	));
+	);
+	WAN::AddNode(_nassimNode);
+	Folder* _sysFolder = new Folder("sys", UserLevel::Admin);
+	_sysFolder->AddFile(new File("x-system.sys"));
+	_nassimNode->GetRoot()->AddFolder(_sysFolder);
 	
 	WAN::AddNode(new Node
 	(
@@ -163,8 +172,8 @@ void VM::CreateAccount(const std::string& _name, const std::string& _username, c
 		WAN::GetRandomIP(),
 		vector<Port*>
 		{
-			new Port(SSH, 22),
-			new Port(FTP, 21)
+			new Port(PortType::SSH, 22),
+			new Port(PortType::FTP, 21)
 		},
 		2
 	));

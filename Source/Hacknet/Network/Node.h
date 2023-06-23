@@ -1,26 +1,29 @@
 ﻿#pragma once
 
+#include "Network/UserLevel.h"
 #include "nlohmann/json.hpp"
 #include <string>
 #include <vector>
 
-class Account;
 class Folder;
 class Port;
+class User;
 
 class Node
 {
 	std::string name = "Node";
 	std::string ip = "0.0.0.0";
+	std::vector<User*> users;
 	Folder* rootFolder = nullptr;
 	std::vector<Port*> ports;
 	int requiredPorts = 0;
-	std::vector<Account*> accounts;
 
 public:
 
 	Node(const std::string& _name, const std::string& _ip, const std::vector<Port*>& _ports, int _requiredPorts);
 	Node(const std::string& _name, const std::string& _ip, Folder* _rootFolder, const std::vector<Port*>& _ports, int _requiredPorts);
+	Node(const std::string& _name, const std::string& _ip, const std::vector<User*>& _users, const std::vector<Port*>& _ports, int _requiredPorts);
+	Node(const std::string& _name, const std::string& _ip, const std::vector<User*>& _users, Folder* _rootFolder, const std::vector<Port*>& _ports, int _requiredPorts);
 	~Node();
 
 	std::string GetName() const { return name; }
@@ -30,8 +33,9 @@ public:
 	Port* GetPort(int _portNumber) const;
 	int GetRequiredPorts() const { return requiredPorts; }
 
-	void AddAccount(Account* _account);
-	Account* Login(const std::string& _username, const std::string& _password) const;
+	void AddUser(User* _user);
+	User* Login(const std::string& _username, const std::string& _password) const;
+	UserLevel GetUserLevel(const std::string& _username) const;
 
 	nlohmann::json ToJson();
 	static Node* FromJson(const nlohmann::json& _json);

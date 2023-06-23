@@ -5,7 +5,7 @@
 
 class PortProcess : public Process
 {
-	PortType targetType = SSH;
+	PortType targetType = PortType::SSH;
 
 public:
 

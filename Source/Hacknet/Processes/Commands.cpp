@@ -5,6 +5,7 @@
 #include "Network/Node.h"
 #include "Network/Port.h"
 #include "Network/WAN.h"
+#include "System/Account.h"
 #include "System/VM.h"
 
 using namespace std;
@@ -41,7 +42,17 @@ bool cd::Execute(const vector<string>& _args)
 	if (_target == "..") _targetFolder = _activeFolder->GetParentFolder();
 	else _targetFolder = _activeFolder->GetFolderByName(_target);
 	
-	if (_targetFolder == nullptr) return false;
+	if (_targetFolder == nullptr)
+	{
+		VM::Log("[cd] Can't find directory : {}", _target);
+		return false;
+	}
+
+	if (_targetFolder->GetRequiredLevel() > VM::GetActiveNode()->GetUserLevel(VM::GetActiveAccount()->GetUsername()))
+	{
+		VM::Log("[cd] You don't have permission to access : {}", _target);
+		return false;
+	}
 	VM::SetActiveFolder(_targetFolder);
 	return true;
 }
