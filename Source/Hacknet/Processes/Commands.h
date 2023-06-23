@@ -82,6 +82,14 @@ public:
 	bool Execute(const std::vector<std::string>& _args) override;
 };
 
+class save : public Process
+{
+public:
+
+	save(const std::string& _name) : Process(_name) { }
+	bool Execute(const std::vector<std::string>& _args) override;
+};
+
 class say : public Process
 {
 public:

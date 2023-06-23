@@ -32,6 +32,7 @@ public:
 	std::vector<Port*> GetPorts() const { return ports; }
 	Port* GetPort(int _portNumber) const;
 	int GetRequiredPorts() const { return requiredPorts; }
+	int GetOpenedPorts() const;
 
 	void AddUser(User* _user);
 	User* Login(const std::string& _username, const std::string& _password) const;

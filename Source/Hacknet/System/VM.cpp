@@ -11,6 +11,7 @@
 #include "Processes/PortProcess.h"
 #include "Saver.h"
 #include "Network/User.h"
+#include "Processes/PortHack.h"
 #include "System/Interpretor.h"
 
 using namespace std;
@@ -90,11 +91,13 @@ void VM::InitCommands()
 	commands.push_back(new ip("ip"));
 	commands.push_back(new ls("ls"));
 	commands.push_back(new mkdir("mkdir"));
+	commands.push_back(new PortHack("PortHack"));
 	commands.push_back(new PortProcess("SSHCrack", PortType::SSH));
 	commands.push_back(new PortProcess("FTPBounce", PortType::FTP));
 	commands.push_back(new probe("probe"));
 	commands.push_back(new rm("rm"));
 	commands.push_back(new rmdir("rmdir"));
+	commands.push_back(new save("save"));
 	commands.push_back(new say("say"));
 	commands.push_back(new shutdown("shutdown"));
 	commands.push_back(new touch("touch"));

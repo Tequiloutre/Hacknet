@@ -93,7 +93,9 @@ std::vector<string> Saver::GetAccountList()
 
 void Saver::SaveGame()
 {
-	Account* _account = VM::GetActiveAccount();
+	VM::Log("[Saver] Saving game...");
+	
+	const Account* _account = VM::GetActiveAccount();
 	
 	const string _dir = GetSaveDir();
 	const string _filePath = _dir + _account->GetUsername() + ".sav";
@@ -116,6 +118,8 @@ void Saver::SaveGame()
 	}
 	_file << setw(4) << _json;
 	_file.close();
+	
+	VM::Log("[Saver] Succesfully saved game {}", _account->GetUsername());
 }
 
 Account* Saver::LoadAccount(const string& _accountName)

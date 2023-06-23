@@ -6,6 +6,7 @@
 #include "Network/Port.h"
 #include "Network/WAN.h"
 #include "System/Account.h"
+#include "System/Saver.h"
 #include "System/VM.h"
 
 using namespace std;
@@ -164,6 +165,12 @@ bool rmdir::Execute(const std::vector<std::string>& _args)
 		_activeFolder->RemoveFolder(_folder);
 	}
 
+	return true;
+}
+
+bool save::Execute(const std::vector<std::string>& _args)
+{
+	Saver::SaveGame();
 	return true;
 }
 

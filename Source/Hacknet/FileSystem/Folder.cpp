@@ -140,13 +140,15 @@ json Folder::ToJson()
 	const size_t _fileCount = files.size();
 	for (size_t i = 0; i < _fileCount; ++i)
 		_json["files"][i] = files[i]->ToJson();
+
+	_json["requiredLevel"] = requiredLevel;
 	
 	return _json;
 }
 
 Folder* Folder::FromJson(const json& _json)
 {
-	Folder* _folder = new Folder(_json["name"]);
+	Folder* _folder = new Folder(_json["name"], _json["requiredLevel"]);
 	
 	if (_json.contains("folders"))
 	{

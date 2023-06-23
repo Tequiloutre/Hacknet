@@ -71,6 +71,14 @@ Port* Node::GetPort(const int _portNumber) const
 	return nullptr;
 }
 
+int Node::GetOpenedPorts() const
+{
+	int _openedPorts = 0;
+	for (const Port* _port : ports)
+		if (_port->IsOpened()) ++_openedPorts;
+	return _openedPorts;
+}
+
 void Node::AddUser(User* _user)
 {
 	for (const User* _tempUser : users)
