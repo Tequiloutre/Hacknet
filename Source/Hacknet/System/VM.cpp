@@ -14,6 +14,9 @@
 #include "Processes/PortHack.h"
 #include "System/Interpretor.h"
 
+#include <iostream>
+#include <conio.h>
+
 using namespace std;
 
 VM::~VM()
@@ -22,6 +25,14 @@ VM::~VM()
 		delete _account;
 	accounts.clear();
  }
+
+int VM::GetChNoBlock()
+{
+	if (_kbhit())
+		return _getch();
+	else
+		return -1;
+}
 
 bool VM::Execute(const std::string& _commandName, const std::vector<std::string>& _args)
 {
@@ -33,6 +44,21 @@ bool VM::Execute(const std::string& _commandName, const std::vector<std::string>
 	}
 	Log("Unknown command : {}", _commandName);
 	return false;
+}
+
+std::string VM::GetCommandStartingWith(const std::string& _input)
+{
+	if (_input.empty()) return "";
+	for (Process* _command : commands)
+	{
+		const size_t _inputLength = _input.length();
+		string _commandName = _command->GetName();
+		if (_commandName.size() < _inputLength) continue;
+		const string _prefix = string(_commandName.begin(), _commandName.begin() + _inputLength);
+		if (_prefix != _input) continue;
+		return _commandName;
+	}
+	return _input;
 }
 
 void VM::StartUp()
@@ -50,9 +76,60 @@ void VM::Update()
 {
 	if (isBusy) return;
 	cout << endl << activeAccount->GetUsername() << '@' << activeNode->GetName() << ":" << activeFolder->GetPath() << "/$ ";
-	string args;
-	getline(cin, args);
-	Interpretor::Read(args);
+
+	input = "";
+
+	int _input = -1;
+	while (_input != '\r')
+	{
+		switch (_input)
+		{
+			case -1:
+				break;
+			case '\t':
+				for (size_t i = 0; i < input.size(); ++i)
+					cout << '\b' << ' ' << '\b';
+				
+				input = GetCommandStartingWith(input);
+				cout << input;
+				break;
+			case '\b':
+				if (input.empty()) break;
+				cout << '\b' << ' ' << '\b';
+				input.erase(input.end() - 1);
+				break;
+			case 224:
+				switch (_getch())
+				{
+					case 72:
+						if (historyIndex == 0) break;
+						for (size_t i = 0; i < input.size(); ++i)
+							cout << '\b' << ' ' << '\b';
+						--historyIndex;
+						input = inputHistory[historyIndex];
+						cout << input;
+						break;
+					case 80:
+						cout << "down";
+						break;
+					default: break;
+				}
+				break;
+			default:
+				const char _char = static_cast<char>(_input);
+				cout << _char;
+				input.push_back(_char);
+				break;
+		}
+
+		_input = GetChNoBlock();
+	}
+
+	inputHistory.push_back(input);
+	historyIndex = inputHistory.size();
+
+	cout << endl;
+	Interpretor::Read(input);
 }
 
 void VM::Shutdown()
