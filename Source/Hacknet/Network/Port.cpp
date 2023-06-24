@@ -2,10 +2,11 @@
 
 #include <nlohmann/json.hpp>
 
-Port::Port(const PortType _type, const int _number)
+Port::Port(const PortType _type, const int _number, const bool _isOpened)
 {
 	type = _type;
 	number = _number;
+	isOpened = _isOpened;
 }
 
 nlohmann::json Port::ToJson()
@@ -24,7 +25,8 @@ Port* Port::FromJson(const nlohmann::json& _json)
 	return new Port
 	(
 		_json["type"],
-		_json["number"]
+		_json["number"],
+		_json["isOpened"]
 	);
 }
 

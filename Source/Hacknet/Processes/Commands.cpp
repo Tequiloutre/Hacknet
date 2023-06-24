@@ -16,7 +16,7 @@ bool cat::Execute(const std::vector<std::string>& _args)
 	if (_args.size() != 1) return false;
 
 	const string& _targetFile = _args[0];
-	const File* _file = VM::GetActiveFolder()->GetFileByName(_targetFile);
+	const File* _file = VM::GetInstance()->GetActiveFolder()->GetFileByName(_targetFile);
 	if (!_file)
 	{
 		VM::Log("cat : can't find {}", _targetFile);
@@ -35,9 +35,9 @@ bool cd::Execute(const vector<string>& _args)
 		return false;
 	}
 	
+	VM* _vm = VM::GetInstance();	
 	const string& _target = _args[0];
-
-	const Folder* _activeFolder = VM::GetActiveFolder();
+	const Folder* _activeFolder = _vm->GetActiveFolder();
 	
 	Folder* _targetFolder;
 	if (_target == "..") _targetFolder = _activeFolder->GetParentFolder();
@@ -49,12 +49,12 @@ bool cd::Execute(const vector<string>& _args)
 		return false;
 	}
 
-	if (_targetFolder->GetRequiredLevel() > VM::GetActiveNode()->GetUserLevel(VM::GetActiveAccount()->GetUsername()))
+	if (_targetFolder->GetRequiredLevel() > _vm->GetActiveNode()->GetUserLevel(_vm->GetActiveAccount()->GetUsername()))
 	{
 		VM::Log("[cd] You don't have permission to access : {}", _target);
 		return false;
 	}
-	VM::SetActiveFolder(_targetFolder);
+	_vm->SetActiveFolder(_targetFolder);
 	return true;
 }
 
@@ -67,28 +67,28 @@ bool connect::Execute(const vector<string>& _args)
 	}
 
 	const string& _targetIP = _args[0];	
-	Node* _targetNode = WAN::GetNode(_targetIP);
+	Node* _targetNode = WAN::GetInstance()->GetNode(_targetIP);
 	if (!_targetNode)
 	{
 		VM::Log("[connect] Can't find node at : {}", _targetIP);
 		return false;
 	}
 
-	VM::Connect(_targetNode);
+	VM::GetInstance()->Connect(_targetNode);
 	return true;
 }
 
 bool disconnect::Execute(const vector<string>& _args)
 {
 	if (!_args.empty()) return false;
-	VM::Disconnect();
+	VM::GetInstance()->Disconnect();
 	return true;
 }
 
 bool ip::Execute(const vector<string>& _args)
 {
 	if (!_args.empty()) return false;
-	VM::Log("eth0: {}", VM::GetActiveNode()->GetIP());
+	VM::Log("eth0: {}", VM::GetInstance()->GetActiveNode()->GetIP());
 	return true;
 }
 
@@ -96,7 +96,7 @@ bool ls::Execute(const vector<string>& _args)
 {
 	if (!_args.empty()) return false;
 
-	const Folder* _activeFolder = VM::GetActiveFolder();
+	const Folder* _activeFolder = VM::GetInstance()->GetActiveFolder();
 
 	const vector<Folder*> _folders = _activeFolder->GetFolders();
 	const size_t _folderCount = _folders.size();
@@ -115,7 +115,7 @@ bool mkdir::Execute(const vector<string>& _args)
 {
 	if (_args.empty()) return false;
 
-	Folder* _activeFolder = VM::GetActiveFolder();
+	Folder* _activeFolder = VM::GetInstance()->GetActiveFolder();
 	for (const string& _arg : _args)
 		_activeFolder->AddFolder(new Folder(_arg));
 
@@ -125,7 +125,7 @@ bool mkdir::Execute(const vector<string>& _args)
 bool probe::Execute(const vector<string>& _args)
 {
 	if (!_args.empty()) return false;
-	const Node* _currentNode = VM::GetActiveNode();
+	const Node* _currentNode = VM::GetInstance()->GetActiveNode();
 	VM::Log("Available ports at : {}", _currentNode->GetName());
 	const vector<Port*> _ports = _currentNode->GetPorts();
 	const size_t _count = _ports.size();
@@ -142,7 +142,7 @@ bool rm::Execute(const std::vector<std::string>& _args)
 {
 	if (_args.empty()) return false;
 
-	Folder* _folder = VM::GetActiveFolder();
+	Folder* _folder = VM::GetInstance()->GetActiveFolder();
 	for (const string& _arg : _args)
 	{
 		const File* _file = _folder->GetFileByName(_arg);
@@ -157,7 +157,7 @@ bool rmdir::Execute(const std::vector<std::string>& _args)
 {
 	if (_args.empty()) return false;
 
-	Folder* _activeFolder = VM::GetActiveFolder();
+	Folder* _activeFolder = VM::GetInstance()->GetActiveFolder();
 	for (const string& _arg : _args)
 	{
 		const Folder* _folder = _activeFolder->GetFolderByName(_arg);
@@ -192,7 +192,7 @@ bool shutdown::Execute(const vector<string>& _args)
 {
 	if (!_args.empty()) return false;
 	
-	VM::Shutdown();
+	VM::GetInstance()->Shutdown();
 	
 	return true;
 }
@@ -201,7 +201,7 @@ bool touch::Execute(const vector<string>& _args)
 {
 	if (_args.empty()) return false;
 
-	Folder* _folder = VM::GetActiveFolder();
+	Folder* _folder = VM::GetInstance()->GetActiveFolder();
 	for (const string& _arg : _args)
 		_folder->AddFile(new File(_arg));
 

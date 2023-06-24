@@ -76,7 +76,7 @@ Node* Saver::LoadNode(const std::string& _name)
 	_file.close();
 
 	Node* _node = Node::FromJson(_json);
-	WAN::AddNode(_node);
+	WAN::GetInstance()->AddNode(_node);
 	return _node;
 }
 
@@ -95,7 +95,7 @@ void Saver::SaveGame()
 {
 	VM::Log("[Saver] Saving game...");
 	
-	const Account* _account = VM::GetActiveAccount();
+	const Account* _account = VM::GetInstance()->GetActiveAccount();
 	
 	const string _dir = GetSaveDir();
 	const string _filePath = _dir + _account->GetUsername() + ".sav";
@@ -103,7 +103,7 @@ void Saver::SaveGame()
 	json _json;
 	
 	_json["account"] = _account->ToJson();
-	_json["wan"] = WAN::ToJson();
+	_json["wan"] = WAN::GetInstance()->ToJson();
 
 	ofstream _file(_filePath);
 	if (_file.bad())
@@ -174,5 +174,5 @@ void Saver::LoadGame(const std::string& _account)
 	_file >> _json;
 	_file.close();
 
-	WAN::FromJson(_json["wan"]);
+	WAN::GetInstance()->FromJson(_json["wan"]);
 }

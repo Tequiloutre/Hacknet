@@ -46,7 +46,7 @@ bool VM::Execute(const std::string& _commandName, const std::vector<std::string>
 	return false;
 }
 
-std::string VM::GetCommandStartingWith(const std::string& _input)
+std::string VM::GetCommandStartingWith(const std::string& _input) const
 {
 	if (_input.empty()) return "";
 	for (Process* _command : commands)
@@ -150,7 +150,7 @@ void VM::Connect(Node* _node)
 
 void VM::Disconnect()
 {
-	activeNode = WAN::GetNode(activeAccount->GetOriginNode());
+	activeNode = WAN::GetInstance()->GetNode(activeAccount->GetOriginNode());
 	activeFolder = activeNode->GetRoot();
 }
 
@@ -203,10 +203,11 @@ bool VM::AccountExist(const std::string& _username)
 
 void VM::CreateAccount(const std::string& _name, const std::string& _username, const std::string& _password)
 {
+	WAN* _wan = WAN::GetInstance();
 	Node* _node = new Node
 	(
 		_name + "-PC",
-		WAN::GetRandomIP(),
+		_wan->GetRandomIP(),
 		vector<User*>
 		{
 			new User(_name, _username, _password, UserLevel::Admin)
@@ -218,7 +219,7 @@ void VM::CreateAccount(const std::string& _name, const std::string& _username, c
 		},
 		5
 	);
-	WAN::AddNode(_node);
+	_wan->AddNode(_node);
 
 	Account* _account = new Account(_name, _username, _password, _node->GetIP());
 	accounts.push_back(_account);
@@ -233,7 +234,7 @@ void VM::CreateAccount(const std::string& _name, const std::string& _username, c
 	Node* _nassimNode = new Node
 	(
 		"Nassim-PC",
-		WAN::GetRandomIP(),
+		_wan->GetRandomIP(),
 		vector<Port*>
 		{
 			new Port(PortType::SSH, 22),
@@ -241,15 +242,15 @@ void VM::CreateAccount(const std::string& _name, const std::string& _username, c
 		},
 		1
 	);
-	WAN::AddNode(_nassimNode);
+	_wan->AddNode(_nassimNode);
 	Folder* _sysFolder = new Folder("sys", UserLevel::Admin);
 	_sysFolder->AddFile(new File("x-system.sys"));
 	_nassimNode->GetRoot()->AddFolder(_sysFolder);
 	
-	WAN::AddNode(new Node
+	_wan->AddNode(new Node
 	(
 		"Thomas-PC",
-		WAN::GetRandomIP(),
+		_wan->GetRandomIP(),
 		vector<Port*>
 		{
 			new Port(PortType::SSH, 22),
@@ -269,7 +270,7 @@ bool VM::LoadAccount(const std::string& _username, const std::string& _password)
 		if (_account->GetPassword() != _password) break;
 		activeAccount = _account;
 		Saver::LoadGame(activeAccount->GetUsername());
-		Connect(WAN::GetNode(activeAccount->GetOriginNode()));
+		Connect(WAN::GetInstance()->GetNode(activeAccount->GetOriginNode()));
 		return true;
 	}
 	return false;

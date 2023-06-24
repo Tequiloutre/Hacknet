@@ -12,7 +12,7 @@ class Port
 
 public:
 
-	Port(PortType _type, int _number);
+	Port(PortType _type, int _number, bool _isOpened = false);
 
 	PortType GetType() const { return type; }
 	int GetNumber() const { return number; }

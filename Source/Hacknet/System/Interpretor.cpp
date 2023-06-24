@@ -23,5 +23,5 @@ void Interpretor::Read(const std::string& _line)
 	
 	const string _process = _args[0];
 	_args.erase(_args.begin());
-	VM::Execute(_process, _args);
+	VM::GetInstance()->Execute(_process, _args);
 }

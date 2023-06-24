@@ -2,22 +2,23 @@
 
 #include <map>
 #include "nlohmann/json.hpp"
+#include "System/Singleton.h"
 
 class Node;
 
-class WAN
+class WAN : public Singleton<WAN>
 {
-	inline static std::map<std::string, Node*> nodes;
+	std::map<std::string, Node*> nodes;
 
 public:
 
 	~WAN();
 	
-	static Node* GetNode(const std::string& _targetIP);
+	Node* GetNode(const std::string& _targetIP);
 	
-	static void AddNode(Node* _node);
-	static std::string GetRandomIP();
+	void AddNode(Node* _node);
+	std::string GetRandomIP();
 
-	static nlohmann::json ToJson();
-	static void FromJson(const nlohmann::json& _json);
+	nlohmann::json ToJson();
+	void FromJson(const nlohmann::json& _json);
 };

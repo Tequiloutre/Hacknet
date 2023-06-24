@@ -5,28 +5,30 @@
 #include <string>
 #include <vector>
 
+#include "Singleton.h"
+
 class Account;
 class Node;
 class Process;
 class Folder;
 
-class VM
+class VM : public Singleton<VM>
 {
-	inline static std::string name = "Hacknet";
-	inline static std::string version = "0.1";
-	inline static std::vector<Account*> accounts;
-	inline static Account* activeAccount = nullptr;
-	inline static bool isOn = false;
-	inline static bool isBusy = false;
+	std::string name = "Hacknet";
+	std::string version = "0.1";
+	std::vector<Account*> accounts;
+	Account* activeAccount = nullptr;
+	bool isOn = false;
+	bool isBusy = false;
 
-	inline static Node* activeNode = nullptr;
-	inline static Folder* activeFolder = nullptr;
+	Node* activeNode = nullptr;
+	Folder* activeFolder = nullptr;
 
-	inline static std::vector<Process*> commands;
+	std::vector<Process*> commands;
 
-	inline static std::string input = "";
-	inline static std::vector<std::string> inputHistory;
-	inline static int historyIndex = 0;
+	std::string input = "";
+	std::vector<std::string> inputHistory;
+	int historyIndex = 0;
 
 public:
 
@@ -34,13 +36,13 @@ public:
 
 	static int GetChNoBlock();
 	
-	static std::string GetName() { return name; }
-	static std::string GetVersion() { return version; }
-	static Account* GetActiveAccount() { return activeAccount; }
-	static Node* GetActiveNode() { return activeNode; }
-	static Folder* GetActiveFolder() { return activeFolder; }
-	static bool IsOn() { return isOn; }
-	static std::string GetCommandStartingWith(const std::string& _input);
+	std::string GetName() const { return name; }
+	std::string GetVersion() const { return version; }
+	Account* GetActiveAccount() const { return activeAccount; }
+	Node* GetActiveNode() const { return activeNode; }
+	Folder* GetActiveFolder() const { return activeFolder; }
+	bool IsOn() const { return isOn; }
+	std::string GetCommandStartingWith(const std::string& _input) const;
 	
 	template<typename... T>
 	static std::string ToString(const std::string& _format, const T&... _args)
@@ -58,25 +60,25 @@ public:
 		std::cout << ToString(_format, _args...) << std::endl;
 	}
 
-	static void StartUp();
-	static void Update();
-	static void Shutdown();
+	void StartUp();
+	void Update();
+	void Shutdown();
 
-	static bool Execute(const std::string& _commandName, const std::vector<std::string>& _args);
-	static void Connect(Node* _node);
-	static void Disconnect();
-	static void SetActiveFolder(Folder* _folder);
+	bool Execute(const std::string& _commandName, const std::vector<std::string>& _args);
+	void Connect(Node* _node);
+	void Disconnect();
+	void SetActiveFolder(Folder* _folder);
 
 private:
 	
-	static void InitCommands();
+	void InitCommands();
 
-	static void LoadAccounts();
-	static bool AccountExist(const std::string& _username);
-	static void CreateAccount(const std::string& _name, const std::string& _username, const std::string& _password);
-	static bool LoadAccount(const std::string& _username, const std::string& _password);
+	void LoadAccounts();
+	bool AccountExist(const std::string& _username);
+	void CreateAccount(const std::string& _name, const std::string& _username, const std::string& _password);
+	bool LoadAccount(const std::string& _username, const std::string& _password);
 
-	static void ShowMainScreen();
-	static void ShowCreateAccountScreen();
-	static void ShowLoadAccountScreen();
+	void ShowMainScreen();
+	void ShowCreateAccountScreen();
+	void ShowLoadAccountScreen();
 };

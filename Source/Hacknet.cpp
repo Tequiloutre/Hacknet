@@ -14,12 +14,12 @@ int main(int argc, char* argv[])
 	static Saver saver;
 
 	Saver::Init();
-	VM::StartUp();
+	VM::GetInstance()->StartUp();
 
 
-	while (VM::IsOn())
+	while (VM::GetInstance()->IsOn())
 	{
-		VM::Update();
+		VM::GetInstance()->Update();
 	}
 
     return 0;
