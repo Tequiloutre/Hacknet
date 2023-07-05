@@ -6,6 +6,8 @@ int main(int argc, char* argv[])
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	// _CrtSetBreakAlloc(205);
+
+	system("cls");
 	
 	srand(static_cast<unsigned int>(time(nullptr)));  // NOLINT(cert-msc51-cpp)
 
@@ -14,12 +16,11 @@ int main(int argc, char* argv[])
 	static Saver saver;
 
 	Saver::Init();
-	VM::GetInstance()->StartUp();
+	vm.StartUp();
 
-
-	while (VM::GetInstance()->IsOn())
+	while (vm.IsOn())
 	{
-		VM::GetInstance()->Update();
+		vm.Update();
 	}
 
     return 0;
